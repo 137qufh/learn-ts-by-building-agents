@@ -105,7 +105,7 @@ export function estimateCost(inputTokens: number, pricePerMillion: number): numb
 }
 ```
 
-> 数字中的 `_` 是分隔符，只为方便阅读，`1_000_000` 就是 `1000000`。
+> `export` 表示这个函数可以被其他文件 `import`。数字中的 `_` 是分隔符，只为方便阅读，`1_000_000` 就是 `1000000`。
 
 ## 小结
 
@@ -113,7 +113,7 @@ export function estimateCost(inputTokens: number, pricePerMillion: number): numb
 - `number` 不区分整数和小数；`NaN` 也是 `number`
 - 严格模式下 `null` 和 `undefined` 是独立的类型，可能为空的值要写成 `string | undefined` 这样的联合类型
 - 在边界（函数参数、导出函数的返回值）写类型，在内部交给推断
-- `let` 推断出宽泛的类型，`const` 推断出字面量类型
+- 对于字符串、数字这样的基本类型值，`let` 推断出宽泛的类型，`const` 推断出字面量类型
 
 练习：本节和下一节共用一道练习，见 [1.2 节末尾](02-objects-and-interfaces.md#练习)。
 

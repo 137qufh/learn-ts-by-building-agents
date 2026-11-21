@@ -48,7 +48,7 @@
 
 **一句话：代码会运行在支持 ES2025 的环境里。**
 
-ECMAScript（简称 ES）是 JavaScript 的语言标准，每年发布一版。`target` 原本的作用是告诉 `tsc` 输出哪个版本的 JS 语法（比如为老浏览器把新语法改写成旧语法）。我们不输出 JS，它在这里主要决定下面 `lib` 的默认值。Node.js 24 已经支持 ES2025 的全部特性。
+ECMAScript（简称 ES）是 JavaScript 的语言标准，每年发布一版。`target` 的主要作用是告诉 `tsc` 输出哪个版本的 JS 语法（比如为老浏览器把新语法改写成旧语法），它还决定了 `lib` 的默认值。我们既不输出 JS，又显式写了 `lib`，所以它在这里影响很小，写出来主要是为了表明代码面向的运行环境。Node.js 24 已经支持 ES2025 的新特性（如迭代器辅助方法、`Set` 的集合运算、`Promise.try`）。
 
 ### `lib: ["es2025"]`
 
@@ -163,7 +163,7 @@ error TS1484: 'Message' is a type and must be imported using a type-only import 
 | `target` | `es5`                 | `es2025`     | 不再默认兼容老旧环境，`es5` 已不再支持 |
 | `module` | `commonjs`            | `esnext`     | 默认是 ES Module                       |
 
-另外，`baseUrl`、`moduleResolution: "node"`（即 `node10`）、`outFile` 等旧选项已经被移除，看到使用它们的教程可以直接跳过那部分。
+另外，`baseUrl`、`moduleResolution: "node"`（即 `node10`）、`outFile` 等旧选项已经被移除。教程里如果用到它们，说明那部分内容已经过时了。
 
 ## 小结
 

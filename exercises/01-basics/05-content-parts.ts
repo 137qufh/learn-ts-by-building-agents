@@ -72,7 +72,11 @@ export function extractText(content: MessageContent): string {
   return todo("实现 extractText");
 }
 
-/** 内容中是否包含执行失败（isError 为 true）的工具结果。字符串内容一律返回 false。 */
+/**
+ * 内容中是否包含执行失败（isError 为 true）的工具结果。字符串内容一律返回 false。
+ *
+ * 提示：数组的 some(callback) 在任意一个元素让 callback 返回 true 时返回 true。
+ */
 export function hasToolError(content: MessageContent): boolean {
   return todo("实现 hasToolError");
 }

@@ -17,6 +17,9 @@ export type ModelId = readonly [provider: string, model: string];
  * - 没有 "/" 时，供应商为 "unknown"："gpt-5" → ["unknown", "gpt-5"]
  * - 供应商或模型名为空（例如 ""、"openai/"、"/gpt-5"）时，抛出 Error，
  *   错误信息为 `无效的模型 ID："<原始输入>"`
+ *
+ * 提示：str.indexOf("/") 返回第一个 "/" 的位置（找不到时返回 -1）；
+ * str.slice(start, end) 截取子串。
  */
 export function splitModelId(id: string): ModelId {
   return todo("实现 splitModelId");
@@ -38,12 +41,18 @@ export function formatModelId(id: ModelId): string {
  *
  * - n 大于等于消息总数时，返回全部消息（的副本）
  * - n 小于等于 0 时，返回空数组
+ *
+ * 提示：数组的 slice 方法总是返回新数组，参数为负数时从末尾倒数。
  */
 export function lastN(messages: readonly string[], n: number): string[] {
   return todo("实现 lastN");
 }
 
-/** 返回最后一条去掉首尾空白后不为空的消息（返回原始字符串，不要 trim）；找不到时返回 undefined。 */
+/**
+ * 返回最后一条去掉首尾空白后不为空的消息（返回原始字符串，不要 trim）；找不到时返回 undefined。
+ *
+ * 提示：数组的 findLast(callback) 从后往前找第一个让 callback 返回 true 的元素。
+ */
 export function lastNonEmpty(messages: readonly string[]): string | undefined {
   return todo("实现 lastNonEmpty");
 }
