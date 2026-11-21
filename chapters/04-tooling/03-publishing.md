@@ -117,7 +117,7 @@ export const tools = ["a", "b"].map((x) => x.toUpperCase());
 | ------------------ | -------------------------------------------------------------------------------------- |
 | `name`             | 包名。`@acme/` 是作用域（scope），属于某个用户或组织，不会和别人撞名                   |
 | `version`          | 语义化版本，见下文                                                                     |
-| `type` / `exports` | 4.1、4.2 节。`types` 条件写最前                                                        |
+| `type` / `exports` | 4.1、4.2 节。`types` 条件写在 `import`/`default` 之前                                  |
 | `files`            | **白名单**：只有这里列出的文件会被打包（`package.json`、`README`、`LICENSE` 总是包含） |
 | `engines`          | 支持的 Node 版本。纯 ESM 包写 `>=22.12`（能被 `require` 的最低版本，4.1 节）           |
 | `sideEffects`      | 告诉打包工具"导入这个包不会产生副作用"，没用到的模块可以放心删掉                       |

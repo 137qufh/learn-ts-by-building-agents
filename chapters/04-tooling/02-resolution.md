@@ -85,7 +85,7 @@ Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './dist/helpers.js' is no
 | `types`   | TypeScript 查找类型时（Node 自己不认这个条件） |
 | `default` | 永远生效，作为兜底，应该放在最后               |
 
-注意是"书写顺序"，不是"条件的优先级"。`types` 必须写在最前面：如果 `import` 写在它前面，TypeScript 解析时 `import` 也是生效的，就会先命中 `./dist/index.js`，找不到类型。`default` 必须写在最后，写在前面的话后面的条件永远轮不到。
+注意是"书写顺序"，不是"条件的优先级"。`types` 要写在 `import`、`require`、`node`、`default` 前面：TypeScript 解析时这几个条件也是生效的，如果 `import` 写在前面，就会先命中 `./dist/index.js`，再去找它旁边的 `index.d.ts`。类型文件恰好在旁边时侥幸能用，不在旁边（比如放在单独的 `types/` 目录里）就找不到了，`types` 条件形同虚设。`default` 必须写在最后，写在前面的话，后面的条件永远轮不到。
 
 ### 自定义条件
 
@@ -103,7 +103,7 @@ Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './dist/helpers.js' is no
 }
 ```
 
-发布出去之后，用户的环境里没有 `tiny-kit/source` 这个条件，用的是编译好的 `dist`；而在同一个仓库里开发时，加上这个条件就能直接用 `src` 里的 `.ts` 文件，改完不用重新编译。条件名带上包名做前缀，是为了不和别的包撞车（如果你的条件叫 `source`，另一个依赖恰好也用了 `source` 条件，它就会被意外打开）。
+发布出去之后，用户的环境里没有 `tiny-kit/source` 这个条件，用的是编译好的 `dist`；而在同一个仓库里开发时，加上这个条件就能直接用 `src` 里的 `.ts` 文件，改完不用重新编译。源码条件写在 `types` 前面，是因为开启它的时候（TypeScript 也可以开启它，见下文），它应该胜出：类型也直接从源码里读。条件名带上包名做前缀，是为了不和别的包撞车（如果你的条件叫 `source`，另一个依赖恰好也用了 `source` 条件，它就会被意外打开）。
 
 示例代码的第 4 部分揭示了一个限制：Node **不会剥离 `node_modules` 里的 `.ts` 文件的类型**，会报 `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`。这是有意的设计，发布到 npm 的包应该是编译好的 JavaScript。不过工作区（4.7 节）里的包是例外：`node_modules` 里只是一个指向 `packages/` 的符号链接，Node 按真实路径判断，所以源码条件在工作区里可以正常使用。章末项目就是这样做的。
 
@@ -161,7 +161,7 @@ pnpm tsc --traceResolution | grep "successfully resolved"
 
 - 说明符有三种：相对路径、`node:` 内置模块、裸说明符（包名 + 子路径）
 - `exports` 是包的公开接口：没列出来的子路径导入不到；`*` 模式按最具体优先；`null` 排除
-- 条件按书写顺序匹配：`types` 写最前，`default` 写最后
+- 条件按书写顺序匹配：`types` 写在 `import`/`require`/`default` 之前，`default` 写最后
 - 自定义条件 + `--conditions` / `customConditions` 可以让开发时直接用源码；Node 不剥离 `node_modules` 里的 `.ts`，但工作区的符号链接不受影响
 - `imports`（`#` 开头）是包内部的别名
 - `moduleResolution: "nodenext"` = Node 的规则 + `types` 条件；给 Node 用的代码不要用 `bundler`

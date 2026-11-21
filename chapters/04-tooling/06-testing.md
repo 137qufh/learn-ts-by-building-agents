@@ -207,4 +207,4 @@ expectTypeOf(summarize).returns.resolves.toEqualTypeOf<{
 
 [exercises/04-tooling/06-test-doubles.ts](../../exercises/04-tooling/06-test-doubles.ts)：自己实现一个类型完整的间谍函数 `createSpy`，和一个假时钟 `createFakeClock`。运行 `pnpm ex 06-test-doubles`。
 
-下一节：4.7 项目结构与 monorepo（编写中）
+下一节：[4.7 项目结构与 monorepo](07-monorepo.md)

@@ -29,7 +29,10 @@ export interface PackageManifest {
  * 4. 没有 exports：`缺少 exports`，并且跳过第 5 条
  * 5. 对 exports 里的每个子路径（exports 是字符串或条件对象时，当作子路径 "."），按键的顺序：
  *    a. 检查这个子路径的条件对象，以及嵌套在里面的所有条件对象：
- *       - 有 "types" 但它不是第一个键：`${子路径}: types 条件必须写在最前面`
+ *       - 有 "types"，但它前面有 "import"、"require"、"node"、"default" 中的某一个：
+ *         `${子路径}: types 条件必须写在 import/require/node/default 之前`
+ *         （这几个条件 TypeScript 查找类型时也会启用，写在前面就会先被命中。
+ *         自定义条件可以写在 types 前面，比如开发时用的源码条件）
  *       - 有 "default" 但它不是最后一个键：`${子路径}: default 条件必须写在最后`
  *    b. 收集这个子路径下所有的字符串目标（包括嵌套条件里的），按出现顺序检查每一个：
  *       - 不含 "*"：去掉开头的 "./" 后不在 files 里 → `${子路径}: ${目标} 不会被发布`

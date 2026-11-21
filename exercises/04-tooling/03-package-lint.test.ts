@@ -61,10 +61,24 @@ describe("lintPackage", () => {
       },
     };
     expect(lintPackage(manifest, goodFiles)).toEqual([
-      ".: types 条件必须写在最前面",
+      ".: types 条件必须写在 import/require/node/default 之前",
       ".: default 条件必须写在最后",
-      "./node: types 条件必须写在最前面",
+      "./node: types 条件必须写在 import/require/node/default 之前",
     ]);
+  });
+
+  test("自定义条件可以写在 types 前面", () => {
+    const manifest: PackageManifest = {
+      ...good,
+      exports: {
+        ".": {
+          "@acme/source": "./src/index.ts",
+          types: "./dist/index.d.ts",
+          default: "./dist/index.js",
+        },
+      },
+    };
+    expect(lintPackage(manifest, [...goodFiles, "src/index.ts"])).toEqual([]);
   });
 
   test("目标文件不会被发布（包括模式）", () => {
@@ -95,7 +109,7 @@ describe("lintPackage", () => {
         "main.js",
         "main.d.ts",
       ]),
-    ).toEqual([".: types 条件必须写在最前面"]);
+    ).toEqual([".: types 条件必须写在 import/require/node/default 之前"]);
   });
 
   test("没有类型声明：既没有 types 目标，旁边也没有同名的 .d.ts", () => {
@@ -147,7 +161,7 @@ describe("lintPackage", () => {
       },
     };
     expect(lintPackage(manifest, ["dist/index.js", "dist/extra.test.js"])).toEqual([
-      ".: types 条件必须写在最前面",
+      ".: types 条件必须写在 import/require/node/default 之前",
       ".: ./dist/index.d.ts 不会被发布",
       "./extra: ./dist/extra.js 不会被发布",
       "./extra: 没有类型声明",
