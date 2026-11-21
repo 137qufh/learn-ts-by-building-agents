@@ -72,4 +72,4 @@ expectTypeOf(ok(42)).toEqualTypeOf<Result<number, never>>();
 
 ## 下一章
 
-第 3 章：异步与流式（`Promise`、`async`/`await`、`AbortSignal`、异步迭代器），并写出第一个流式的大模型客户端。编写中，敬请期待。
+[第 3 章：异步与流式](../03-async/README.md)：`Promise`、`async`/`await`、错误处理、并发、取消与超时、重试、异步迭代器和流，并写出第一个流式的大模型客户端。
