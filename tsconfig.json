@@ -8,13 +8,10 @@
 
     /* 模块：按 Node.js 的规则解析 import */
     "module": "nodenext",
-    "moduleResolution": "nodenext",
     "moduleDetection": "force",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "isolatedModules": true,
     "erasableSyntaxOnly": true,
-    "resolveJsonModule": true,
 
     /* 只做类型检查，不输出 .js（代码由 node / tsx / vitest 直接运行） */
     "noEmit": true,
@@ -28,8 +25,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* 其他 */
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "skipLibCheck": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
