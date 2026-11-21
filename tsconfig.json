@@ -1,0 +1,36 @@
+{
+  // 这份配置的每一项都在 chapters/00-setup/03-tsconfig.md 里有解释。
+  "compilerOptions": {
+    /* 语言与运行环境 */
+    "target": "es2025",
+    "lib": ["es2025"],
+    "types": ["node"],
+
+    /* 模块：按 Node.js 的规则解析 import */
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "erasableSyntaxOnly": true,
+    "resolveJsonModule": true,
+
+    /* 只做类型检查，不输出 .js（代码由 node / tsx / vitest 直接运行） */
+    "noEmit": true,
+
+    /* 严格程度：strict 全开，再加几项更严格的检查 */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* 其他 */
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

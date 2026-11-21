@@ -1,0 +1,27 @@
+{
+  "name": "learn-ts-by-building-agents",
+  "version": "0.0.0",
+  "private": true,
+  "description": "从零学 TypeScript，一路做到能自己写一个 Agent Harness。",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "typecheck": "tsc",
+    "test": "vitest run --mode solutions",
+    "ex": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm typecheck && pnpm format:check && pnpm test"
+  },
+  "packageManager": "pnpm@12.21.0",
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "prettier": "^3.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.1"
+  }
+}
