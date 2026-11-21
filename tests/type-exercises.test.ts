@@ -6,6 +6,7 @@
  * 再把测试文件复制进去，然后对整个目录运行一次 tsc。
  *
  * 顺便把运行时测试（*.test.ts）也复制进去，保证它们对参考答案同样能通过类型检查。
+ * 有些测试会导入 chapters/ 下的辅助代码（比如第 3 章项目的假服务器），所以 chapters/ 的 .ts 文件也一并复制。
  */
 import { spawnSync } from "node:child_process";
 import { cpSync, globSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
@@ -34,7 +35,8 @@ test.skipIf(typeTests.length === 0)(
     const testFiles = globSync("exercises/**/*.{test,test-d}.ts").map((f) =>
       f.replaceAll("\\", "/"),
     );
-    for (const file of testFiles) {
+    const chapterFiles = globSync("chapters/**/*.ts").map((f) => f.replaceAll("\\", "/"));
+    for (const file of [...testFiles, ...chapterFiles]) {
       mkdirSync(dirname(join(TEMP_DIR, file)), { recursive: true });
       cpSync(file, join(TEMP_DIR, file));
     }

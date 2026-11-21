@@ -178,4 +178,4 @@ response.body          ReadableStream<Uint8Array>
 
 [exercises/03-async/09-sse-parser.ts](../../exercises/03-async/09-sse-parser.ts)：实现 `decodeChunks`、`splitLines`、`parseSse`，以及把它们串起来的 `readSse`。测试会把输入切成各种奇怪的形状。运行 `pnpm ex 09-sse-parser`。
 
-下一节：3.10 章末项目：流式 LLM 客户端（编写中）
+下一节：[3.10 章末项目：流式 LLM 客户端](10-project-streaming-client.md)
