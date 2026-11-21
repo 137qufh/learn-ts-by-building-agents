@@ -7,7 +7,10 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, test } from "vitest";
 
-const testFiles = globSync("exercises/**/*.test.ts").sort();
+// 统一成正斜杠，Windows 上 globSync 返回的是反斜杠路径
+const testFiles = globSync("exercises/**/*.test.ts")
+  .map((file) => file.replaceAll("\\", "/"))
+  .sort();
 
 describe("练习结构", () => {
   test("至少有一道练习", () => {
