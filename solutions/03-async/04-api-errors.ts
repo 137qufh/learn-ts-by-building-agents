@@ -88,6 +88,8 @@ export function formatErrorChain(error: unknown): string {
   while (current !== undefined && !seen.has(current)) {
     seen.add(current);
     if (!(current instanceof Error)) {
+      // 非 Error 的值什么都可能是（字符串、数字、对象），String() 是最稳妥的兜底
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       parts.push(String(current));
       break;
     }

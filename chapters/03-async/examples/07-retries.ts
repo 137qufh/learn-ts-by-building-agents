@@ -72,7 +72,7 @@ const reply = await retry(
     shouldRetry: isTransient,
     onRetry: ({ attempt, delayMs, error }) =>
       console.log(
-        `第 ${attempt} 次失败（${error instanceof Error ? error.message : error}），${delayMs}ms 后重试`,
+        `第 ${attempt} 次失败（${error instanceof Error ? error.message : String(error)}），${delayMs}ms 后重试`,
       ),
   },
 );

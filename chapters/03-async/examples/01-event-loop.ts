@@ -3,6 +3,9 @@
 //
 // 第 2、3 段开头的 `await new Promise(...)` 只是为了让各段依次执行、互不干扰，
 // 3.2 和 3.3 节会讲它们，现在只看每段里面的输出顺序即可。
+//
+// 这个文件演示回调的执行时机，故意不等待 .then 返回的 Promise（4.5 节会讲这条 lint 规则）
+/* eslint-disable @typescript-eslint/no-floating-promises */
 
 // ── 1. 最基本的顺序 ──────────────────────────────────────────────
 console.log("1 同步：开始");

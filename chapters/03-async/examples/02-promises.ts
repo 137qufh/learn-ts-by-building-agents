@@ -1,5 +1,8 @@
 // 3.2 Promise：创建、链式调用、错误传播
 // 运行：pnpm tsx chapters/03-async/examples/02-promises.ts
+//
+// 这一节演示 then 链本身，所以很多链的末尾故意没有 await 或 catch（4.5 节会讲这条 lint 规则）
+/* eslint-disable @typescript-eslint/no-floating-promises */
 
 // ── 1. 用 new Promise 包装一个基于回调的 API ─────────────────────────
 function sleep(ms: number): Promise<void> {

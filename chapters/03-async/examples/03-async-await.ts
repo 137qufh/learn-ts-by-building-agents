@@ -62,6 +62,7 @@ console.log(
 
 // ── 4. forEach 不会等待 async 回调 ────────────────────────────────────
 const done: string[] = [];
+// eslint-disable-next-line @typescript-eslint/no-misused-promises -- 故意演示这个错误
 prompts.forEach(async (prompt) => {
   done.push(await callModel(prompt));
 });

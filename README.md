@@ -74,7 +74,8 @@ docs/        写作约定
 | `pnpm tsx <文件>` | 运行一个 TS 文件                                         |
 | `pnpm typecheck`  | 用 `tsc` 检查整个仓库的类型                              |
 | `pnpm test`       | 运行全部测试（练习测试使用参考答案）                     |
-| `pnpm check`      | 提交前检查：typecheck + 格式 + 测试                      |
+| `pnpm lint`       | 用 ESLint 检查代码（第 4 章讲）                          |
+| `pnpm check`      | 提交前检查：typecheck + 格式 + lint + 测试               |
 
 ## 参与
 

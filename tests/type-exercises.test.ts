@@ -47,7 +47,7 @@ test.skipIf(typeTests.length === 0)(
       JSON.stringify({ extends: "../tsconfig.json", include: ["**/*.ts"], exclude: [] }),
     );
 
-    const tsc = join(dirname(require.resolve("typescript/package.json")), "bin/tsc");
+    const tsc = join(dirname(require.resolve("typescript7/package.json")), "bin/tsc");
     const result = spawnSync(process.execPath, [tsc, "-p", TEMP_DIR, "--pretty", "false"], {
       encoding: "utf8",
     });

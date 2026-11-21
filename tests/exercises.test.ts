@@ -27,8 +27,8 @@ describe("练习结构", () => {
     });
 
     test("题目和参考答案导出相同的名字", async () => {
-      const exercise: object = await import(/* @vite-ignore */ toUrl(exerciseFile));
-      const solution: object = await import(/* @vite-ignore */ toUrl(solutionFile));
+      const exercise = (await import(/* @vite-ignore */ toUrl(exerciseFile))) as object;
+      const solution = (await import(/* @vite-ignore */ toUrl(solutionFile))) as object;
       expect(Object.keys(solution).sort()).toEqual(Object.keys(exercise).sort());
     });
   });

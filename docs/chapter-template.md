@@ -88,7 +88,7 @@ solutions/01-basics/
 提交前本地运行：
 
 ```bash
-pnpm check   # = typecheck + format:check + test
+pnpm check   # = typecheck + format:check + lint + test
 ```
 
 - 所有示例、答案、测试都必须通过 `tsc` 和 `vitest`

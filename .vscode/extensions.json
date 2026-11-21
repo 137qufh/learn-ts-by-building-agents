@@ -2,6 +2,7 @@
   "recommendations": [
     "TypeScriptTeam.native-preview",
     "vitest.explorer",
+    "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "editorconfig.editorconfig"
   ]

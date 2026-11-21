@@ -46,7 +46,7 @@ try {
 } catch (error) {
   const waited = Math.round((performance.now() - start) / 10) * 10;
   console.log(
-    `sleep 被取消：${error instanceof Error ? error.message : error}，只等了约 ${waited}ms`,
+    `sleep 被取消：${error instanceof Error ? error.message : String(error)}，只等了约 ${waited}ms`,
   ); // sleep 被取消：不等了，只等了约 20ms
 }
 

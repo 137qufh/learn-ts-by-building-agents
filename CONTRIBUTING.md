@@ -26,8 +26,9 @@ pnpm check
 | `pnpm test`      | 运行全部测试；练习测试会改用 `solutions/` 里的参考答案         |
 | `pnpm ex`        | 学习者模式：只运行练习测试，用的是你自己在 `exercises/` 的代码 |
 | `pnpm ex:types`  | 用 `tsc` 检查练习目录（包括类型测试），显示完整的错误信息      |
+| `pnpm lint`      | 用 ESLint（含类型感知的规则）检查，`exercises/` 除外           |
 | `pnpm format`    | 用 Prettier 格式化                                             |
-| `pnpm check`     | 提交前跑这个：typecheck + format:check + test                  |
+| `pnpm check`     | 提交前跑这个：typecheck + format:check + lint + test           |
 
 ## 写作约定
 

@@ -36,6 +36,7 @@ function describe(error: unknown): string {
     e !== undefined && parts.length < 5;
     e = e instanceof Error ? e.cause : undefined
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string -- 非 Error 的值用 String() 兜底
     parts.push(e instanceof Error ? e.message : String(e));
   }
   return parts.join(" ← ");

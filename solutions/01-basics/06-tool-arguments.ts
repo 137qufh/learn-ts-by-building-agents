@@ -19,7 +19,7 @@ export function parseToolArguments(json: string): Record<string, unknown> {
   try {
     parsed = JSON.parse(json);
   } catch (error) {
-    throw new Error(`工具参数不是合法的 JSON：${getErrorMessage(error)}`);
+    throw new Error(`工具参数不是合法的 JSON：${getErrorMessage(error)}`, { cause: error });
   }
 
   if (!isRecord(parsed)) {

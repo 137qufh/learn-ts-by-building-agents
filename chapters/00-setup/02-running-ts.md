@@ -103,7 +103,7 @@ SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript enum is not supporte
 
 1. **写代码时**：编辑器实时显示类型错误（它在后台跑的就是 TS 的类型检查）
 2. **运行时**：用 `tsx` 或 `node`，秒开
-3. **提交前**：`pnpm check`，用 `tsc` 检查整个项目，再跑全部测试
+3. **提交前**：`pnpm check`，用 `tsc` 检查整个项目，检查格式和 lint（第 4 章讲），再跑全部测试
 4. **CI**：每次推送和提交 PR，GitHub Actions 都会再做一遍同样的检查
 
 ## 类型管不到运行时的数据

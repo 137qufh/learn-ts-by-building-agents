@@ -2,7 +2,10 @@
  * 练习 3-1 参考答案：预测执行顺序
  *
  * 每个谜题的推演过程写在对应的预测旁边。
+ *
+ * 谜题考的是执行顺序，所以故意不等待某些 Promise、故意 await 普通的值（4.5 节会讲这两条 lint 规则）。
  */
+/* eslint-disable @typescript-eslint/no-floating-promises, @typescript-eslint/await-thenable */
 /** 记录一条输出。测试会把所有输出按顺序收集起来，和你的预测比较。 */
 export type Log = (message: string) => void;
 

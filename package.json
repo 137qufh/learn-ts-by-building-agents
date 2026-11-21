@@ -13,16 +13,22 @@
     "test": "vitest run --mode solutions",
     "ex": "vitest",
     "ex:types": "tsc -p exercises",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm typecheck && pnpm format:check && pnpm test"
+    "check": "pnpm typecheck && pnpm format:check && pnpm lint && pnpm test"
   },
   "packageManager": "pnpm@12.21.0",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^24.19.2",
+    "eslint": "^10.15.0",
+    "jiti": "^2.7.0",
     "prettier": "^3.10.1",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.73.0",
+    "typescript7": "npm:typescript@^7.0.2",
     "vitest": "^5.1.1"
   }
 }

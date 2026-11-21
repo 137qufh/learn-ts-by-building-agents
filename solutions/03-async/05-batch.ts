@@ -14,7 +14,7 @@ export async function mapWithConcurrency<T, R>(
   fn: (item: T, index: number) => Promise<R>,
 ): Promise<R[]> {
   assertLimit(limit);
-  const results: R[] = new Array(items.length);
+  const results = new Array<R>(items.length);
   let next = 0;
   let failed = false;
 

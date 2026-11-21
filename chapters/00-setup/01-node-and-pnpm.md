@@ -67,11 +67,13 @@ pnpm install
 
 | 包            | 作用                                         |
 | ------------- | -------------------------------------------- |
-| `typescript`  | 提供 `tsc` 命令：类型检查器                  |
+| `typescript7` | 提供 `tsc` 命令：类型检查器（TypeScript 7）  |
 | `tsx`         | 直接运行 `.ts` 文件的工具（下一节详细讲）    |
 | `vitest`      | 测试框架，所有练习都靠它判断对错             |
 | `prettier`    | 代码格式化工具，保证大家的代码风格一致       |
 | `@types/node` | Node.js 内置 API（`process`、`fs` 等）的类型 |
+
+还有几个是第 4 章才用到的（`eslint`、`typescript-eslint` 等），现在不用管。你可能会奇怪 TypeScript 为什么叫 `typescript7`，而名字叫 `typescript` 的那一项却是 TypeScript 6：这是 TypeScript 7 刚发布时官方推荐的过渡做法，4.5 节会解释。
 
 ## 仓库导览
 
