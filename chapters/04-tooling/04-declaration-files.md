@@ -173,4 +173,4 @@ declare module "vitest" {
 
 [exercises/04-tooling/04-colors.ts](../../exercises/04-tooling/04-colors.ts)：给一个没有类型的终端颜色库 [vendor/ansi-lite.js](../../exercises/04-tooling/vendor/ansi-lite.js) 写出声明文件 `vendor/ansi-lite.d.ts`，再用它实现显示工具状态的函数。运行 `pnpm ex 04-colors`。
 
-下一节：4.5 ESLint：类型感知的代码检查（编写中）
+下一节：[4.5 ESLint：类型感知的代码检查](05-linting.md)

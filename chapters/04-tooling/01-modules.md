@@ -78,7 +78,7 @@ error TS1484: 'Message' is a type and must be imported using a type-only import
 when 'verbatimModuleSyntax' is enabled.
 ```
 
-0.3 节讲过：只导入类型要写 `import type`。也可以在一条 `import` 里给单个名字加 `type`：`import { type Message, createMessage } from "./message.ts"`。
+[0.3 节](../00-setup/03-tsconfig.md)讲过：只导入类型要写 `import type`。也可以在一条 `import` 里给单个名字加 `type`：`import { type Message, createMessage } from "./message.ts"`。
 
 ## ESM 与 CJS 互相导入
 

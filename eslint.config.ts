@@ -15,11 +15,15 @@ export default defineConfig(
       // 练习目录是学习者自己的工作区：题目里的 todo() 和 any 占位必然违反规则。
       // 想检查自己的答案，运行 pnpm exec eslint --no-ignore exercises/某个文件.ts
       "exercises/",
+      // 4.5 节的"标本"：故意写错的代码，由那一节的示例显式检查
+      "chapters/04-tooling/examples/specimens/",
     ],
   },
   js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
+    // 已经不再需要的禁用注释也算错误：代码改好之后，注释要跟着删掉
+    linterOptions: { reportUnusedDisableDirectives: "error" },
     languageOptions: {
       parserOptions: {
         // 每个文件使用离它最近的 tsconfig.json 获取类型信息，和编辑器的行为一致

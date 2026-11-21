@@ -21,6 +21,8 @@ export default defineConfig(({ mode }) => {
       include: useSolutions
         ? ["chapters/**/*.test.ts", "exercises/**/*.test.ts", "tests/**/*.test.ts"]
         : ["exercises/**/*.test.ts"],
+      // 少数测试需要知道自己在检查哪个目录（比如练习 4-5 要对练习文件本身运行 ESLint）
+      env: { LEARN_TS_MODE: useSolutions ? "solutions" : "exercises" },
       typecheck: {
         enabled: !useSolutions,
         include: ["exercises/**/*.test-d.ts"],
