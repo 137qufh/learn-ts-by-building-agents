@@ -16,6 +16,7 @@ chapters/01-basics/
 exercises/01-basics/
   01-xxx.ts                 练习题：签名写好，函数体是 todo()
   01-xxx.test.ts            测试即规格：没做完时失败，做对了变绿
+  01-xxx.test-d.ts          （可选）类型测试：检查类型是否正确，由 tsc 检查而不是运行
   project/                  章末项目的题目和测试
 solutions/01-basics/
   01-xxx.ts                 参考答案（与题目导出完全相同的名字）
@@ -56,6 +57,17 @@ solutions/01-basics/
 - 类型和函数签名由题目给出，函数体调用 `todo()`（返回 `never`，运行时抛错）
 - 测试用中文描述行为，测试本身就是规格说明；边界情况要覆盖到
 - 练习文件必须能通过 `tsc`（即使还没实现），这样读者的编辑器里不会一开始就一片红
+
+### 类型练习（`*.test-d.ts`，从第 2 章开始）
+
+有些练习考的是类型本身：写对一个泛型签名、一个映射类型。这类练习配一个类型测试文件：
+
+- 用 Vitest 的 `expectTypeOf` 写断言；`pnpm ex` 会用 `tsc` 检查它，类型不对就算测试失败
+- 还没实现的类型写成 `Todo`（从 `exercises/todo.ts` 导入）；需要学习者自己写签名的函数，先用 `any` 占位，
+  保证同目录的运行时测试在没做完时也能通过 `tsc`
+- 根目录的 `tsconfig.json` 排除了 `exercises/**/*.test-d.ts`（它们在做完之前一定报错），
+  `exercises/tsconfig.json` 把它们包含回来，供编辑器和 `pnpm ex` 使用；`pnpm ex:types` 可以看到 `tsc` 的完整输出
+- 参考答案由 `tests/type-exercises.test.ts` 检查：它把答案放到练习文件的位置，再对类型测试和运行时测试运行 `tsc`
 
 ### 参考答案（`solutions/`）
 

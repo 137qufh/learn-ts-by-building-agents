@@ -12,6 +12,7 @@
     "typecheck": "tsc",
     "test": "vitest run --mode solutions",
     "ex": "vitest",
+    "ex:types": "tsc -p exercises",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "pnpm typecheck && pnpm format:check && pnpm test"

@@ -5,10 +5,12 @@ import { defineConfig, type Plugin } from "vitest/config";
  *
  * - 默认（`pnpm ex`）：只跑 exercises/ 下的测试，测试导入的是你自己写的练习文件。
  *   没做完的练习会失败，这是故意的：把它们一个个变绿就是你的任务。
+ *   从第 2 章开始还有类型测试（*.test-d.ts）：它们不会运行，而是交给 tsc 检查，
+ *   类型不对就算失败。
  *
  * - solutions 模式（`pnpm test`，CI 也用这个）：跑全部测试，并且把练习测试里对
  *   exercises/ 的导入悄悄换成 solutions/ 里的参考答案，用来证明“题目 + 答案 + 测试”
- *   三者是一致的。
+ *   三者是一致的。类型测试没法这样改写导入，改由 tests/type-exercises.test.ts 检查。
  */
 export default defineConfig(({ mode }) => {
   const useSolutions = mode === "solutions";
@@ -19,6 +21,11 @@ export default defineConfig(({ mode }) => {
       include: useSolutions
         ? ["chapters/**/*.test.ts", "exercises/**/*.test.ts", "tests/**/*.test.ts"]
         : ["exercises/**/*.test.ts"],
+      typecheck: {
+        enabled: !useSolutions,
+        include: ["exercises/**/*.test-d.ts"],
+        tsconfig: "exercises/tsconfig.json",
+      },
     },
   };
 });

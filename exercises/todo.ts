@@ -7,3 +7,13 @@
 export function todo(hint = "还没实现"): never {
   throw new Error(`TODO: ${hint}`);
 }
+
+/**
+ * 类型练习里还没实现的类型都写成 `Todo`。
+ *
+ * 它是一个普通的对象类型，和任何正确答案都不相等，所以类型测试会失败；
+ * 失败信息里会出现下面这个属性名，提醒你这里还没写。
+ */
+export interface Todo {
+  readonly __todo__: "把 Todo 换成你的实现";
+}

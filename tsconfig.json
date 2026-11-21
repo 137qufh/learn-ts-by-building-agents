@@ -28,5 +28,6 @@
     "skipLibCheck": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+  // 类型练习的测试在做完之前一定报错，由 `pnpm ex` 单独检查（见 exercises/tsconfig.json）
+  "exclude": ["node_modules", "exercises/**/*.test-d.ts", ".solutions-typecheck"]
 }
