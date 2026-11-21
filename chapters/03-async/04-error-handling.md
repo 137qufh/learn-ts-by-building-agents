@@ -55,7 +55,7 @@ error.retryable; // true
 逐行看：
 
 - `class ApiError extends Error`：定义一个类，**继承** `Error`。`ApiError` 的实例拥有 `Error` 的一切（`message`、`stack`……），再加上自己的东西
-- `readonly status: number`：声明一个实例属性。类的属性必须在构造函数里赋值，否则 `strict` 模式会报错
+- `readonly status: number`：声明一个实例属性。`strict` 模式下，每个属性要么在声明处给出初始值（像下面的 `name`），要么在构造函数里赋值，否则会报错；`readonly` 表示赋值之后不能再修改
 - `constructor`：用 `new ApiError(...)` 创建实例时执行的函数。子类的构造函数必须先调用 `super(...)`，也就是父类的构造函数
 - `override readonly name = "ApiError"`：`Error` 本身就有 `name` 属性，这里覆盖它，让错误信息和日志里显示 `ApiError` 而不是 `Error`。`override` 关键字表示"我知道父类里有同名成员，是有意覆盖的"，本仓库开启了 `noImplicitOverride`，少了它会报错
 - `get retryable()`：**getter**，用起来像属性（`error.retryable`），实际上每次读取时执行这个函数

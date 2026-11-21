@@ -154,7 +154,7 @@ loadPrompt("planner")
 - Promise 被拒绝时，后面的 `then` 回调都会被跳过，直到遇到 `catch`。这就像同步代码里的异常：抛出后跳过后面的语句，直到被 `try/catch` 接住
 - `then` 的回调里 **抛出异常**，等同于返回一个被拒绝的 Promise。所以 `JSON.parse` 失败这类错误也会被下游的 `catch` 接住
 - `catch` 返回一个值，链就恢复成功状态；在 `catch` 里再次抛出，链继续保持失败
-- `finally` 不接收参数，也不改变结果，适合做清理工作（关闭连接、停止计时）
+- `finally` 不接收参数，也不改变结果（除非它自己抛出异常或返回一个被拒绝的 Promise，那样链就会以这个新的原因失败），适合做清理工作（关闭连接、停止计时）
 
 > `catch` 回调的参数在标准库里的类型是 `any`。这是历史原因，和 `try/catch` 不一样（严格模式下 `catch (error)` 里的 `error` 是 `unknown`，见 1.7 节）。养成习惯，自己写上 `(error: unknown)`。
 
@@ -206,6 +206,6 @@ function getLengthBetter(): Promise<number> {
 
 ## 练习
 
-[exercises/03-async/02-promises.ts](../../exercises/03-async/02-promises.ts)：实现 `sleep`、把回调 API 包装成 Promise 的 `fromCallback`，以及一个自己的 `createDeferred`。运行 `pnpm ex 02-promises`。
+[exercises/03-async/02-promises.ts](../../exercises/03-async/02-promises.ts)：实现 `sleep`、把回调 API 包装成 Promise 的 `fromCallback` 和通用的 `promisify`、一个自己的 `createDeferred`，以及失败时提供备用值的 `orElse`。运行 `pnpm ex 02-promises`。
 
 下一节：[3.3 async/await](03-async-await.md)

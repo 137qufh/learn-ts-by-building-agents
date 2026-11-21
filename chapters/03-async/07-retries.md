@@ -89,6 +89,8 @@ async function retry<T>(fn: (attempt: number) => Promise<T>, options: RetryOptio
 }
 ```
 
+（这里的 `ApiError` 比 3.4 节的多了一个 `retryAfterMs` 属性，由构造它的代码从 `Retry-After` 响应头解析出来，见示例文件。）
+
 几个设计决定：
 
 - **`retries` 是重试的次数，不含第一次尝试。** `retries: 3` 最多调用 4 次。名字要起清楚，"最多尝试 3 次"和"最多重试 3 次"差了一次

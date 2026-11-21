@@ -125,9 +125,11 @@ async function callModel(
     body: prompt,
     signal: AbortSignal.any(signals),
   });
-  /* ... */
+  return response.text(); // 读取响应体时，同一个 signal 仍然有效
 }
 ```
+
+注意这里的超时覆盖的是 **整个请求**：从发出请求，到读完响应体。对一次普通的请求，这正是我们想要的。但对于要读很久的流式响应，"总时长"往往不是合适的限制，3.10 节的项目会把超时拆成"等待响应头"和"两块数据之间的间隔"两段。
 
 ## 区分取消、超时和失败
 
