@@ -88,4 +88,10 @@ export default defineConfig(
       "@typescript-eslint/no-unsafe-argument": "off",
     },
   },
+  {
+    // 纯 JavaScript 文件（练习里"没有类型的第三方库"）不在 tsconfig 的范围内，
+    // 没法做类型感知的检查，只保留普通规则
+    files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
 );

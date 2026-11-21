@@ -170,4 +170,4 @@ pnpm tsc --traceResolution | grep "successfully resolved"
 
 [exercises/04-tooling/02-exports.ts](../../exercises/04-tooling/02-exports.ts)：自己实现 `exports` 的解析算法（测试会拿真实的 Node 来对答案），再给一个包写出满足要求的 `exports`。运行 `pnpm ex 02-exports`。
 
-下一节：4.3 打包一个库（编写中）
+下一节：[4.3 打包一个库](03-publishing.md)
