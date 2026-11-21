@@ -117,4 +117,4 @@ async function retry<T>(fn: (attempt: number) => Promise<T>, options: RetryOptio
 
 [exercises/03-async/07-retry.ts](../../exercises/03-async/07-retry.ts)：实现 `parseRetryAfter` 和一个支持退避、抖动、Retry-After、取消的 `retry`。运行 `pnpm ex 07-retry`。
 
-下一节：3.8 异步迭代器与生成器（编写中）
+下一节：[3.8 异步迭代器与生成器](08-async-iterators.md)
