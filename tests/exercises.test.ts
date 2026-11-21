@@ -3,6 +3,8 @@
  * 这样贡献者改了题目却忘了改答案（或反过来）时，CI 会第一时间发现。
  */
 import { existsSync, globSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { describe, expect, test } from "vitest";
 
 const testFiles = globSync("exercises/**/*.test.ts").sort();
@@ -22,9 +24,13 @@ describe("练习结构", () => {
     });
 
     test("题目和参考答案导出相同的名字", async () => {
-      const exercise: object = await import(`../${exerciseFile}`);
-      const solution: object = await import(`../${solutionFile}`);
+      const exercise: object = await import(/* @vite-ignore */ toUrl(exerciseFile));
+      const solution: object = await import(/* @vite-ignore */ toUrl(solutionFile));
       expect(Object.keys(solution).sort()).toEqual(Object.keys(exercise).sort());
     });
   });
 });
+
+function toUrl(file: string): string {
+  return pathToFileURL(resolve(file)).href;
+}
