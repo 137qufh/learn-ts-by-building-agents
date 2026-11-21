@@ -1,0 +1,34 @@
+{
+  // 用法见 chapters/00-setup/04-debugging.md
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "调试当前文件（Node 原生运行 TS）",
+      "type": "node",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "调试当前文件（tsx）",
+      "type": "node",
+      "request": "launch",
+      "program": "${file}",
+      "runtimeArgs": ["--import", "tsx"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    },
+    {
+      "name": "调试当前测试文件（Vitest）",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+      "args": ["run", "${relativeFile}"],
+      "autoAttachChildProcesses": true,
+      "smartStep": true,
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    }
+  ]
+}

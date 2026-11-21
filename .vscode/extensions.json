@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "TypeScriptTeam.native-preview",
+    "vitest.explorer",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig"
+  ]
+}
