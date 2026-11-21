@@ -178,4 +178,4 @@ console.log(done.length); // 0：forEach 早就返回了
 
 [exercises/03-async/03-tool-runner.ts](../../exercises/03-async/03-tool-runner.ts)：用 async/await 实现工具调用的顺序执行、并发执行和按顺序回退。运行 `pnpm ex 03-tool-runner`。
 
-下一节：3.4 错误处理（编写中）
+下一节：[3.4 错误处理](04-error-handling.md)
