@@ -29,6 +29,7 @@
  *   - assistant 消息的每个工具调用，都要在下一条非 tool 消息之前有一条对应的 tool 消息；
  *     缺少的补上 { role: "tool", tool_call_id, content: note }，放在这一组已有的结果后面，按调用的顺序
  *   - 找不到对应调用的 tool 消息（包括同一个调用的第二条结果）丢掉
+ *   - 同一条 assistant 消息里重复出现的调用 id 只算一次（只需要一条结果）
  *   这正是第 1 章项目里"找出还没有结果的工具调用"的用武之地。
  *
  * 第四部分：shouldRetryStep(error, signal)

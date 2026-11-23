@@ -127,6 +127,14 @@ describe("repairHistory", () => {
   });
   const user: Message = { role: "user", content: "hi" };
 
+  test("同一条消息里重复的调用 id 只算一次", () => {
+    expect(repairHistory([user, ask("a", "a"), result("a")])).toEqual([
+      user,
+      ask("a", "a"),
+      result("a"),
+    ]);
+  });
+
   test("完整的记录原样返回", () => {
     const messages = [
       user,

@@ -445,6 +445,15 @@ describe("中间件", () => {
     });
   });
 
+  test("给钩子的 messages 是副本：存起来之后不会跟着主循环变化", async () => {
+    const seen: (readonly Message[])[] = [];
+    const { agent } = agentWith([{ toolCalls: [echo("a")] }, { text: "ok" }], {
+      middleware: [{ name: "spy", beforeModel: (_, info) => void seen.push(info.messages) }],
+    });
+    await agent.run("go").result;
+    expect(seen.map((messages) => messages.length)).toEqual([1, 3]);
+  });
+
   test("afterStep 拿到的是包含这一步工具结果的记录", async () => {
     const afterStep = vi.fn(() => undefined);
     const { agent } = agentWith([{ toolCalls: [echo("a")] }, { text: "ok" }], {

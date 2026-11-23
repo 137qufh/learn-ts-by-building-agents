@@ -83,7 +83,7 @@ Promise.try(() => execute(call, callSignal)).then(onSuccess, onFailure);
 
 `execute` 的类型说它返回 Promise，但写工具的人可能在函数开头直接 `throw`（比如参数检查），这时根本没有 Promise，`.then` 都来不及调用，错误就从 `runToolCalls` 里冒出去了。`Promise.try`（ES2025）把"调用一个函数"包装成 Promise：同步抛出、返回值、返回 Promise，统统变成一个 Promise。凡是调用别人写的回调，都值得这样包一层。
 
-工具抛出的错误还要再分一次类：如果这时整体已经取消了，错误多半就是取消造成的（工具收到信号后抛出了 `AbortError`），状态应该是 cancelled 而不是 error。
+工具收到取消信号后通常会抛出 `AbortError`。它会不会被误报成 error？不会：`abort` 事件的监听器是同步执行的，取消的那一刻，每个调用都已经得到了 cancelled 结果，工具后来的拒绝会被"以第一个为准"丢掉。立刻给出结果，顺带也省掉了"这个错误是不是取消造成的"这种猜测。
 
 ## 清理
 

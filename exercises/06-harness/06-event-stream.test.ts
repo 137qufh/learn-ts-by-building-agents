@@ -18,13 +18,18 @@ describe("createChannel", () => {
 
   test("消费者在等待时，push 会唤醒它", async () => {
     const channel = createChannel<string>();
-    const result = drain(channel);
-    await Promise.resolve();
+    const iterator = channel[Symbol.asyncIterator]();
+    const first = iterator.next(); // 缓冲区是空的：消费者在等
+    await new Promise((resolve) => setTimeout(resolve, 5));
     channel.push("a");
+    expect(await first).toEqual({ value: "a", done: false }); // 不需要 close 就能拿到
+
+    const second = iterator.next();
     await new Promise((resolve) => setTimeout(resolve, 5));
     channel.push("b");
+    expect(await second).toEqual({ value: "b", done: false });
     channel.close();
-    expect(await result).toEqual(["a", "b"]);
+    expect(await iterator.next()).toEqual({ value: undefined, done: true });
   });
 
   test("close 之后 push 被忽略并返回 false；closed 反映状态", () => {

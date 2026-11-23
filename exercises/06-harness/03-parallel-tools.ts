@@ -23,7 +23,6 @@
  *     execute 返回 { ok: false }   → status "error"，content 原样保留
  *     execute 抛出或拒绝（包括同步抛出，提示：Promise.try）
  *                                  → status "error"，content 是 `工具执行失败：${message}`（不是 Error 时用 String）
- *                                    但如果这时整体已经取消，status 是 "cancelled"
  *
  * 超时（给了 timeoutMs 时）
  *   - 到时间还没完成：取消它的 signal（reason 是一个 name 为 "TimeoutError" 的 DOMException），

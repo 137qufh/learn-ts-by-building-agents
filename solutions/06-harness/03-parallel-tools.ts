@@ -118,12 +118,10 @@ export async function runToolCalls(
           status: outcome.ok ? "ok" : "error",
         }),
       (error: unknown) => {
-        if (signal?.aborted) {
-          finish(index, { ok: false, content: CANCELLED_CONTENT, status: "cancelled" });
-        } else {
-          const message = error instanceof Error ? error.message : String(error);
-          finish(index, { ok: false, content: `工具执行失败：${message}`, status: "error" });
-        }
+        // 不用担心取消造成的 AbortError 被当成 error：取消时 onAbort 已经同步地给了每个调用
+        // cancelled 结果，这里的 finish 会被"以第一个为准"忽略
+        const message = error instanceof Error ? error.message : String(error);
+        finish(index, { ok: false, content: `工具执行失败：${message}`, status: "error" });
       },
     );
   }
