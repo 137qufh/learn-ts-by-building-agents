@@ -93,7 +93,7 @@ harness 导入 `@learn-ts/agent-kit` 时，TypeScript 去哪里找类型？按 4
 
 有两种主流的解决办法。
 
-**办法一：项目引用**（project references）。每个包的 `tsconfig.json` 开启 `composite`，依赖方用 `references` 指向被依赖的包，然后用 `tsc --build` 按顺序增量构建。TypeScript 和编辑器会自动把对 `dist/*.d.ts` 的引用映射回源码。这是 TypeScript 官方的方案，适合大型仓库，代价是配置较多，而且必须构建。
+**办法一：项目引用**（project references）。每个包的 `tsconfig.json` 开启 `composite`，依赖方用 `references` 指向被依赖的包，然后用 `tsc --build` 按依赖顺序增量构建：先构建被依赖的包，再检查依赖方。编辑器（语言服务）会把对 `dist/*.d.ts` 的引用映射回源码，所以在编辑器里改完不用等构建；命令行检查则依靠 `--build` 保证 `.d.ts` 是最新的。这是 TypeScript 官方的方案，适合大型仓库，代价是配置较多，而且必须构建。
 
 **办法二：自定义源码条件**。4.2 节介绍过：在 `exports` 里加一个只在开发时启用的条件，指向源码：
 

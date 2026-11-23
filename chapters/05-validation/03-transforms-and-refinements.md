@@ -4,7 +4,7 @@
 
 示例代码：[examples/03-transforms-and-refinements.ts](examples/03-transforms-and-refinements.ts)
 
-上一节的 schema 只回答"是不是"。这一节的工具让 schema 能 **检查更多** 和 **顺便转换**，这正是上一节"解析，而不是验证"的第 3 点。
+上一节的 schema 只回答"是不是"。这一节的工具让 schema 能 **检查更多** 和 **顺便转换**，这正是 [5.1 节](01-trust-boundaries.md)"解析，而不是验证"的第 3 点。
 
 ## 细化：refine 和 superRefine
 

@@ -146,7 +146,7 @@ import { createToolbox, defineTool } from "@learn-ts/agent-kit/zod";
 - `ChatRequest.tools` 的类型从 `ToolSchema[]` 放宽成 `readonly (ToolSchema | FunctionDefinition)[]`，这样 `toolbox.schemas()` 可以直接传进去。放宽一个 **参数** 的类型，原来的调用依然成立，所以是兼容的变化（反过来，收窄参数类型、或者放宽返回值类型，才会破坏使用者）
 - 主入口的名字一个都没有改
 
-0.x 版本按照惯例，minor 的变化也可能是不兼容的。但养成按规则对待版本号的习惯，到 1.0 时就不会手忙脚乱。
+0.x 版本按照惯例，minor 的变化也可能是不兼容的。所以 npm 对 0.x 的 `^` 特别保守（[4.3 节](../04-tooling/03-publishing.md)）：写着 `^0.1.0` 的使用者 **不会** 自动升级到 0.2.0，必须自己改版本范围。这对使用者是保护，对作者是提醒：0.x 的每个 minor 都相当于一次大版本，发布说明里要写清楚怎么升级。养成按规则对待版本号的习惯，到 1.0 时就不会手忙脚乱。
 
 ### 为什么包里的 parseChunk 没有换成 Zod
 
