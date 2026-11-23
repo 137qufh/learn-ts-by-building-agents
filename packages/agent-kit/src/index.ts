@@ -66,4 +66,73 @@ export { batch, collect, idleTimeout, mapAsync, take } from "./streams.ts";
 export { parseSse, readSse, type SseEvent } from "./sse.ts";
 export { addUsage, estimateCost, totalTokens, type Pricing, type Usage } from "./usage.ts";
 
+// ── agent harness（第 6 章） ──────────────────────────────────────────
+// 只导出使用者组装、扩展、测试 harness 时需要的东西。主循环内部的决策函数
+// （afterTurn、重复检测、中间件的执行顺序……）和给模型看的提示文字都不导出：
+// 它们是实现细节，以后可以随时调整，不需要升级大版本（4.3 节）
+export {
+  createAgent,
+  type Agent,
+  type AgentOptions,
+  type AgentRun,
+  type RunOptions,
+} from "./agent/agent.ts";
+export {
+  assistantMessage,
+  collectTurn,
+  type Model,
+  type ToolExecutor,
+  type Turn,
+} from "./agent/loop.ts";
+export {
+  runToolCalls,
+  type ExecuteTool,
+  type RunToolsOptions,
+  type ToolRun,
+  type ToolStatus,
+} from "./agent/tools.ts";
+export {
+  estimateTokens,
+  fitToBudget,
+  groupTurns,
+  messageTokens,
+  truncateMiddle,
+  type FitResult,
+} from "./agent/context.ts";
+export { repairHistory, type AgentResult, type StopReason } from "./agent/recovery.ts";
+export {
+  createChannel,
+  dispatchEvent,
+  type AgentEvent,
+  type AgentEventType,
+  type Channel,
+  type EventHandlers,
+  type EventOf,
+} from "./agent/events.ts";
+export {
+  compose,
+  requireApproval,
+  type AgentMiddleware,
+  type Next,
+  type StepInfo,
+  type ToolInvocation,
+  type ToolOutcome,
+  type Wrapper,
+} from "./agent/middleware.ts";
+export {
+  createRecordingTracer,
+  isSecretKey,
+  noopTracer,
+  redact,
+  toJsonLine,
+  traced,
+  type Attributes,
+  type RecordingTracer,
+  type RecordingTracerOptions,
+  type Span,
+  type SpanOptions,
+  type SpanRecord,
+  type Tracer,
+} from "./agent/tracing.ts";
+
 // 用 Zod 定义工具（第 5 章）在单独的入口 @learn-ts/agent-kit/zod 里，见 ./zod/index.ts

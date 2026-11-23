@@ -1,8 +1,8 @@
 {
   "name": "@learn-ts/agent-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "第 2、3、5 章的工具注册表、流式模型客户端和基于 Zod 的工具定义，打包成一个可以复用的包。",
+  "description": "第 2、3、5、6 章的工具注册表、流式模型客户端、基于 Zod 的工具定义和 agent harness，打包成一个可以复用的包。",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -17,9 +17,9 @@
       "default": "./dist/zod/index.js"
     },
     "./testing": {
-      "@learn-ts/source": "./src/testing/fake-openai.ts",
-      "types": "./dist/testing/fake-openai.d.ts",
-      "default": "./dist/testing/fake-openai.js"
+      "@learn-ts/source": "./src/testing/index.ts",
+      "types": "./dist/testing/index.d.ts",
+      "default": "./dist/testing/index.js"
     },
     "./package.json": "./package.json"
   },
