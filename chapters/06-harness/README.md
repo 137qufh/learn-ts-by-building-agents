@@ -71,4 +71,4 @@
 
 ## 下一章
 
-第 7 章：扩展。在这个 harness 上接入 MCP、让多个 agent 协作、跨对话的记忆，以及评测 agent 的表现。编写中，敬请期待。
+[第 7 章：MCP、多 agent、记忆与评测](../07-extensions/README.md)。在这个 harness 上接入 MCP、把活分给别的 agent、记住这次运行之外的事，并用评测抓住退步。

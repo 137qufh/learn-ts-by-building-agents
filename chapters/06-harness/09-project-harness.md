@@ -177,7 +177,7 @@ pnpm tsx --env-file=.env --conditions=@learn-ts/source chapters/06-harness/proje
 
 ## 和后面章节的关系
 
-- **第 7 章** 在这个 harness 上扩展：通过 MCP 接入外部的工具、多个 agent 协作、跨对话的记忆，以及用真实的模型评测 agent 的表现
+- **[第 7 章](../07-extensions/README.md)** 在这个 harness 上扩展：通过 MCP 接入外部的工具、多个 agent 协作、跨对话的记忆，以及评测 agent 的表现
 
 ## 小结
 
@@ -190,4 +190,4 @@ pnpm tsx --env-file=.env --conditions=@learn-ts/source chapters/06-harness/proje
 
 [exercises/06-harness/project/agent.ts](../../exercises/06-harness/project/agent.ts) 和 [exercises/06-harness/project/sandbox.ts](../../exercises/06-harness/project/sandbox.ts)。运行 `pnpm ex project/agent` 和 `pnpm ex project/sandbox`，或者 `pnpm ex 06-harness` 运行本章的全部练习。
 
-下一章：第 7 章（编写中）。回到[本章目录](README.md)。
+下一章：[第 7 章：MCP、多 agent、记忆与评测](../07-extensions/README.md)。回到[本章目录](README.md)。
