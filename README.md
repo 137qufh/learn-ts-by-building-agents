@@ -32,16 +32,16 @@ pnpm ex 00-setup                                  # 开始做第 0 章的练习
 
 ## 学习路线
 
-| 章  | 内容                                                                                                  | 章末项目                       | 状态      |
-| --- | ----------------------------------------------------------------------------------------------------- | ------------------------------ | --------- |
-| 0   | [环境](chapters/00-setup/README.md)：Node.js、pnpm、tsc / tsx / node、tsconfig、调试                  | Echo Agent：命令行聊天循环     | ✅ 已完成 |
-| 1   | [类型基础](chapters/01-basics/README.md)：对象、数组、函数、字面量、联合与收窄、unknown               | 聊天记录（transcript）类型模型 | ✅ 已完成 |
-| 2   | [进阶类型](chapters/02-advanced-types/README.md)：泛型、keyof、映射与条件类型、infer、调试类型错误    | 类型安全的工具注册表           | ✅ 已完成 |
-| 3   | [异步与流式](chapters/03-async/README.md)：Promise、async/await、错误处理、并发、取消、重试、流与 SSE | 流式 LLM 客户端                | ✅ 已完成 |
-| 4   | 工程化：模块、包、测试、lint、构建与发布                                                              | 一个可发布的 npm 包            | 📝 编写中 |
-| 5   | Schema 与校验：Zod、JSON Schema、运行时校验                                                           | 类型安全的工具（tool）定义     | 计划中    |
-| 6   | Agent Harness：消息循环、工具调用、上下文管理、错误重试                                               | 最小可用的 agent harness       | 计划中    |
-| 7   | 扩展：MCP、多 agent、记忆、评测                                                                       | 完整项目                       | 计划中    |
+| 章  | 内容                                                                                                  | 章末项目                         | 状态      |
+| --- | ----------------------------------------------------------------------------------------------------- | -------------------------------- | --------- |
+| 0   | [环境](chapters/00-setup/README.md)：Node.js、pnpm、tsc / tsx / node、tsconfig、调试                  | Echo Agent：命令行聊天循环       | ✅ 已完成 |
+| 1   | [类型基础](chapters/01-basics/README.md)：对象、数组、函数、字面量、联合与收窄、unknown               | 聊天记录（transcript）类型模型   | ✅ 已完成 |
+| 2   | [进阶类型](chapters/02-advanced-types/README.md)：泛型、keyof、映射与条件类型、infer、调试类型错误    | 类型安全的工具注册表             | ✅ 已完成 |
+| 3   | [异步与流式](chapters/03-async/README.md)：Promise、async/await、错误处理、并发、取消、重试、流与 SSE | 流式 LLM 客户端                  | ✅ 已完成 |
+| 4   | [工程化](chapters/04-tooling/README.md)：模块、exports、构建与发布、声明文件、lint、测试、monorepo    | 工作区里的包 @learn-ts/agent-kit | ✅ 已完成 |
+| 5   | Schema 与校验：Zod、JSON Schema、运行时校验                                                           | 类型安全的工具（tool）定义       | 📝 编写中 |
+| 6   | Agent Harness：消息循环、工具调用、上下文管理、错误重试                                               | 最小可用的 agent harness         | 计划中    |
+| 7   | 扩展：MCP、多 agent、记忆、评测                                                                       | 完整项目                         | 计划中    |
 
 ## 怎么学
 
