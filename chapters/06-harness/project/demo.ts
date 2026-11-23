@@ -152,13 +152,14 @@ const terminal = process.stdin.isTTY
   ? createInterface({ input: process.stdin, output: process.stdout })
   : undefined;
 
-async function approve(path: string): Promise<boolean> {
+async function approve(path: string, signal: AbortSignal): Promise<boolean> {
   if (!live || terminal === undefined) {
     print(`  ？ 允许写入 ${path} 吗？（演示：自动同意）`);
     return true;
   }
   print("");
-  const answer = await terminal.question(`  ？ 允许写入 ${path} 吗？(y/N) `);
+  // 这次调用超时或者被取消时，signal 会收起这个提问
+  const answer = await terminal.question(`  ？ 允许写入 ${path} 吗？(y/N) `, { signal });
   return answer.trim().toLowerCase() === "y";
 }
 
@@ -171,12 +172,13 @@ const agent = createAgent({
     "先用工具了解情况再回答，不要猜文件的内容。用中文回答，简洁。",
   ].join("\n"),
   maxSteps: 12,
-  toolTimeoutMs: 10_000,
+  // 工具的超时包括等用户确认的时间（确认是在 wrapToolCall 里发生的），交互时要留够
+  toolTimeoutMs: live ? 300_000 : 10_000,
   contextTokens: 8_000,
   middleware: [
-    requireApproval(["write_file"], (call) => {
+    requireApproval(["write_file"], (call, signal) => {
       const { path } = JSON.parse(call.arguments) as { path?: unknown };
-      return approve(String(path));
+      return approve(String(path), signal);
     }),
   ],
   tracer,

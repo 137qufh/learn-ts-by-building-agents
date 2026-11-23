@@ -22,10 +22,14 @@
  *   toolPipeline(middleware, execute)：把所有 wrapToolCall 按顺序组合起来（没有 wrapToolCall 的跳过）
  *
  * 第三部分：requireApproval(tools, ask)
- *   一个中间件（name 是 "require-approval"）：调用 tools 里的工具之前先 ask(call)。
+ *   一个中间件（name 是 "require-approval"）：调用 tools 里的工具之前先 ask(call, signal)，
+ *   signal 是这次调用的 invocation.signal（界面可以用它在超时或取消时收起提问）。
  *   同意就执行；拒绝时不执行，结果是 { ok: false, content:
  *   `用户拒绝了这次 ${工具名} 调用。不要重试同样的操作，换一种做法或者直接回答。` }。
  *   不在名单里的工具直接执行，不询问。
+ *   - 一次只问一个问题：前一个 ask 还没有回答（或者失败）时，后来的调用排队等待
+ *   - 轮到某个调用、或者拿到回答时，如果它的 signal 已经取消（超时或者整体取消），
+ *     抛出 signal.reason，绝不执行工具
  */
 import type { ChatRequest, Message, RawToolCall } from "@learn-ts/agent-kit";
 import { todo } from "../todo.ts";
@@ -93,7 +97,7 @@ export function toolPipeline(
 
 export function requireApproval(
   tools: readonly string[],
-  ask: (call: RawToolCall) => boolean | Promise<boolean>,
+  ask: (call: RawToolCall, signal: AbortSignal) => boolean | Promise<boolean>,
 ): AgentMiddleware {
   return todo("实现 requireApproval");
 }

@@ -143,11 +143,10 @@ describe("runAfterStep", () => {
 });
 
 const call: RawToolCall = { id: "c1", name: "write_file", arguments: "{}" };
-const invocation = (c: RawToolCall = call): ToolInvocation => ({
-  call: c,
-  step: 1,
-  signal: new AbortController().signal,
-});
+const invocation = (
+  c: RawToolCall = call,
+  signal: AbortSignal = new AbortController().signal,
+): ToolInvocation => ({ call: c, step: 1, signal });
 const execute = async ({ call: c }: ToolInvocation): Promise<ToolOutcome> => ({
   ok: true,
   content: `ran ${c.name}`,
@@ -197,7 +196,65 @@ describe("requireApproval", () => {
       ok: false,
       content: "用户拒绝了这次 write_file 调用。不要重试同样的操作，换一种做法或者直接回答。",
     });
-    expect(ask).toHaveBeenCalledWith(call);
+    expect(ask).toHaveBeenCalledWith(call, expect.any(AbortSignal));
+  });
+
+  test("一次只问一个问题：并行的调用排队", async () => {
+    const asked: string[] = [];
+    const answers: ((value: boolean) => void)[] = [];
+    const ask = (c: RawToolCall): Promise<boolean> => {
+      asked.push(c.id);
+      return new Promise<boolean>((resolve) => answers.push(resolve));
+    };
+    const run = toolPipeline([requireApproval(["write_file"], ask)], execute);
+    const first = run(invocation({ ...call, id: "a" }));
+    const second = run(invocation({ ...call, id: "b" }));
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    expect(asked).toEqual(["a"]); // 第一个还没回答，第二个在排队
+
+    answers[0]!(false);
+    expect(await first).toMatchObject({ ok: false });
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    expect(asked).toEqual(["a", "b"]);
+    answers[1]!(true);
+    expect(await second).toEqual({ ok: true, content: "ran write_file" });
+  });
+
+  test("前一个提问失败了，后面的照样会问", async () => {
+    let count = 0;
+    const ask = (): boolean => {
+      count++;
+      if (count === 1) throw new Error("界面崩了");
+      return true;
+    };
+    const run = toolPipeline([requireApproval(["write_file"], ask)], execute);
+    await expect(run(invocation())).rejects.toThrow("界面崩了");
+    expect(await run(invocation())).toEqual({ ok: true, content: "ran write_file" });
+  });
+
+  test("等回答的时候超时或者取消了：不执行工具", async () => {
+    const controller = new AbortController();
+    const spy = vi.fn(execute);
+    const run = toolPipeline(
+      [
+        requireApproval(["write_file"], () => {
+          controller.abort(new Error("超时了"));
+          return true; // 用户在超时之后才点了同意
+        }),
+      ],
+      spy,
+    );
+    await expect(run(invocation(call, controller.signal))).rejects.toThrow("超时了");
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  test("排队期间已经取消的调用不再提问", async () => {
+    const controller = new AbortController();
+    controller.abort(new Error("取消了"));
+    const ask = vi.fn(() => true);
+    const run = toolPipeline([requireApproval(["write_file"], ask)], execute);
+    await expect(run(invocation(call, controller.signal))).rejects.toThrow("取消了");
+    expect(ask).not.toHaveBeenCalled();
   });
 
   test("名字是 require-approval", () => {

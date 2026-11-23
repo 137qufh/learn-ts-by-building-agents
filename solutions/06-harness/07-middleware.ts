@@ -93,21 +93,32 @@ export function toolPipeline(
 
 export function requireApproval(
   tools: readonly string[],
-  ask: (call: RawToolCall) => boolean | Promise<boolean>,
+  ask: (call: RawToolCall, signal: AbortSignal) => boolean | Promise<boolean>,
 ): AgentMiddleware {
   const guarded = new Set(tools);
+  // 一次只问一个问题：同一步里并行的几个调用都要确认时，排队等前一个回答完
+  let queue: Promise<unknown> = Promise.resolve();
   return {
     name: "require-approval",
     async wrapToolCall(invocation, next) {
-      if (!guarded.has(invocation.call.name)) {
+      const { call, signal } = invocation;
+      if (!guarded.has(call.name)) {
         return next(invocation);
       }
-      if (await ask(invocation.call)) {
+      const answer = queue.then(() => {
+        signal.throwIfAborted();
+        return ask(call, signal);
+      });
+      queue = answer.catch(() => undefined);
+      const approved = await answer;
+      // 等回答的时候，这次调用可能已经超时或者被取消了：模型已经收到了那个结果，这里绝不能再执行
+      signal.throwIfAborted();
+      if (approved) {
         return next(invocation);
       }
       return {
         ok: false,
-        content: `用户拒绝了这次 ${invocation.call.name} 调用。不要重试同样的操作，换一种做法或者直接回答。`,
+        content: `用户拒绝了这次 ${call.name} 调用。不要重试同样的操作，换一种做法或者直接回答。`,
       };
     },
   };
