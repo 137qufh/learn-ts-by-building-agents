@@ -148,4 +148,4 @@ Temperature.parse(5); // 1
 
 [exercises/05-validation/03-env-config.ts](../../exercises/05-validation/03-env-config.ts)：把环境变量解析成 agent 的配置：默认值、空白值、整数范围、布尔值、URL、品牌类型的 API key，以及一个不会泄漏 key 的配置摘要。运行 `pnpm ex 03-env-config`。
 
-下一节：5.4 JSON Schema：给模型看的 schema（编写中）
+下一节：[5.4 JSON Schema：给模型看的 schema](04-json-schema.md)
