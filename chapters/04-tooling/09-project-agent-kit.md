@@ -235,7 +235,7 @@ pnpm tsx --conditions=@learn-ts/source chapters/04-tooling/project/demo.ts
 
 ## 和后面章节的关系
 
-- **第 5 章** 给这个包加上运行时校验（Zod）：`parseChunk` 和工具参数不再用 `as` 相信外部数据
+- **第 5 章** 用 Zod 给工具参数加上运行时校验，作为新的入口 `@learn-ts/agent-kit/zod` 发布 0.2.0（5.7 节）；练习 5-6 把 `parseChunk` 里的 `as` 换成了 schema
 - **第 6 章** 起，harness 作为工作区里的另一个包，用 `workspace:*` 依赖 `@learn-ts/agent-kit`，它的测试用 `@learn-ts/agent-kit/testing` 里的假服务器
 
 ## 小结

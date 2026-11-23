@@ -63,4 +63,4 @@
 
 ## 下一章
 
-第 5 章：Schema 与运行时校验。用 Zod 描述工具参数和模型输出，从同一份 schema 得到 TypeScript 类型、JSON Schema 和运行时校验，替换掉第 2 章手写的迷你 schema 和第 3 章 `parseChunk` 里的 `as`。编写中，敬请期待。
+[第 5 章：Schema 与运行时校验](../05-validation/README.md)。用 Zod 描述工具参数和模型输出，从同一份 schema 得到 TypeScript 类型、JSON Schema 和运行时校验，替换掉第 2 章手写的迷你 schema 和第 3 章 `parseChunk` 里的 `as`。

@@ -109,4 +109,4 @@ return body.success
 
 [exercises/05-validation/06-chunk-schema.ts](../../exercises/05-validation/06-chunk-schema.ts)：给第 3 章流式客户端的数据块写 Zod schema，替换掉 `parseChunk` 里的 `as`：用到的字段严格、多余的字段忽略、缺少和 `null` 都接受、新的 `finish_reason` 不会让流失败。运行 `pnpm ex 06-chunk-schema`。
 
-下一节：5.7 章末项目：用 Zod 定义工具（编写中）
+下一节：[5.7 章末项目：用 Zod 定义工具](07-project-zod-tools.md)

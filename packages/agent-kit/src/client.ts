@@ -25,9 +25,20 @@ export interface WireToolCall {
   function: { name: string; arguments: string };
 }
 
+/**
+ * 发给模型的函数描述。第 2 章的 ToolSchema 和 @learn-ts/agent-kit/zod 生成的 FunctionSchema 都符合它。
+ * （0.2.0 起 tools 接受它；原来的 ToolSchema[] 仍然可以直接传，这是向后兼容的放宽。）
+ */
+export interface FunctionDefinition {
+  name: string;
+  description: string;
+  parameters: Record<string, unknown>;
+  strict?: boolean;
+}
+
 export interface ChatRequest {
   messages: Message[];
-  tools?: ToolSchema[];
+  tools?: readonly (ToolSchema | FunctionDefinition)[];
   temperature?: number;
   maxTokens?: number;
 }

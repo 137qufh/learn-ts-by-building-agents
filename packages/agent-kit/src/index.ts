@@ -36,6 +36,7 @@ export {
   type ChatResult,
   type ClientOptions,
   type FetchLike,
+  type FunctionDefinition,
   type LlmClient,
   type Message,
   type StreamEvent,
@@ -64,3 +65,5 @@ export {
 export { batch, collect, idleTimeout, mapAsync, take } from "./streams.ts";
 export { parseSse, readSse, type SseEvent } from "./sse.ts";
 export { addUsage, estimateCost, totalTokens, type Pricing, type Usage } from "./usage.ts";
+
+// 用 Zod 定义工具（第 5 章）在单独的入口 @learn-ts/agent-kit/zod 里，见 ./zod/index.ts

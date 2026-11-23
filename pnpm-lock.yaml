@@ -220,6 +220,9 @@ importers:
       typescript7:
         specifier: npm:typescript@^7.0.2
         version: typescript@7.0.2
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
 
 packages:
 
