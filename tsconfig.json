@@ -12,6 +12,8 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
+    // 导入工作区里的包时，直接使用它的源码而不是编译产物（4.2 节的自定义条件，4.9 节的项目）
+    "customConditions": ["@learn-ts/source"],
 
     /* 只做类型检查，不输出 .js（代码由 node / tsx / vitest 直接运行） */
     "noEmit": true,
@@ -29,5 +31,5 @@
   },
   "include": ["**/*.ts"],
   // 类型练习的测试在做完之前一定报错，由 `pnpm ex` 单独检查（见 exercises/tsconfig.json）
-  "exclude": ["node_modules", "exercises/**/*.test-d.ts", ".solutions-typecheck"]
+  "exclude": ["node_modules", "**/dist", "exercises/**/*.test-d.ts", ".solutions-typecheck"]
 }

@@ -1,0 +1,31 @@
+{
+  // 开发用的配置：只检查，不输出，和仓库根目录的规则一致。编译发布用 tsconfig.build.json。
+  "compilerOptions": {
+    "target": "es2025",
+    "lib": ["es2025"],
+    "types": ["node"],
+
+    "module": "nodenext",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "noEmit": true,
+    // 测试用包名导入自己（"@learn-ts/agent-kit"），这个条件让它指向 src 而不是还没构建的 dist
+    "customConditions": ["@learn-ts/source"],
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // 公开的东西都要写明类型（4.3 节）。放在开发配置里，编辑器里就能立刻看到。
+    // isolatedDeclarations 要求同时开启 declaration（noEmit 时不会真的输出）
+    "declaration": true,
+    "isolatedDeclarations": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "test"]
+}

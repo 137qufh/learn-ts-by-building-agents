@@ -28,7 +28,7 @@ export type LoadOutcome = "esm" | "cjs" | "syntax-error";
  * @param packageType 离文件最近的 package.json 里的 "type"，没写就是 undefined
  * @param usesEsmSyntax 文件里是否用了 ESM 独有的语法（import/export 语句、import.meta、顶层 await）
  *
- * 只需要考虑 .js .ts .mjs .mts .cjs .cts 六种扩展名，其他扩展名抛出 Error。
+ * 只需要考虑 .js .ts .mjs .mts .cjs .cts 六种扩展名，其他扩展名抛出 Error，消息里包含"扩展名"。
  */
 export function moduleFormat(
   fileName: string,
@@ -75,6 +75,7 @@ export function isPluginFile(fileName: string): boolean {
  *     `${文件名}: 默认导出不是合法的工具`
  *   - 工具名和前面某个文件的重复：`${文件名}: 工具名 "${name}" 已经被 ${先占用的文件名} 使用`
  *     （按文件名顺序，先到先得）
+ * - 目录本身读不了（比如不存在）：这不是某个插件的问题，让 readdir 的错误原样传出去（Promise 被拒绝）
  */
 export async function loadTools(dir: string): Promise<LoadResult> {
   return todo("实现 loadTools");

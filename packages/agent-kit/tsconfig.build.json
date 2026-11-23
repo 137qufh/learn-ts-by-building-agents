@@ -1,0 +1,15 @@
+{
+  // 编译发布用的配置：pnpm --filter @learn-ts/agent-kit build
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "rewriteRelativeImportExtensions": true,
+
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": ["src"]
+}

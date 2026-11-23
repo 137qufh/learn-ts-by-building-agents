@@ -119,4 +119,4 @@ Total time:      0.215s
 
 [exercises/04-tooling/08-profiling.ts](../../exercises/04-tooling/08-profiling.ts)：实现百分位数和一个可以注入时钟的计时器 `createTracer`。运行 `pnpm ex 08-profiling`。
 
-下一节：4.9 项目：@learn-ts/agent-kit（编写中）
+下一节：[4.9 项目：@learn-ts/agent-kit](09-project-agent-kit.md)

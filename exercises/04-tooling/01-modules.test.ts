@@ -31,8 +31,8 @@ describe("moduleFormat", () => {
   });
 
   test("不认识的扩展名抛出错误", () => {
-    expect(() => moduleFormat("data.json", "module", false)).toThrow(Error);
-    expect(() => moduleFormat("Makefile", undefined, false)).toThrow(Error);
+    expect(() => moduleFormat("data.json", "module", false)).toThrow("扩展名");
+    expect(() => moduleFormat("Makefile", undefined, false)).toThrow("扩展名");
   });
 
   // 不只和上面的表对答案：在临时目录里造出全部 36 种组合，让真实的 Node 跑一遍
@@ -169,6 +169,6 @@ describe("loadTools", () => {
   });
 
   test("目录不存在时，Promise 被拒绝", async () => {
-    await expect(loadTools(join(dir, "missing"))).rejects.toThrow();
+    await expect(loadTools(join(dir, "missing"))).rejects.toMatchObject({ code: "ENOENT" });
   });
 });

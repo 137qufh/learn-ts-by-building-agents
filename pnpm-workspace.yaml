@@ -1,3 +1,7 @@
+# 工作区里的包（4.7 节）。根目录本身也是工作区的一员
+packages:
+  - "packages/*"
+
 allowBuilds:
   # esbuild（tsx 的依赖）的 postinstall 只是校验二进制文件，不运行也能正常工作。
   esbuild: false

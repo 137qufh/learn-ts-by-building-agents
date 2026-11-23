@@ -1,0 +1,38 @@
+{
+  "name": "@learn-ts/agent-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "第 2、3 章的工具注册表和流式模型客户端，打包成一个可以复用的包。",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "@learn-ts/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./testing": {
+      "@learn-ts/source": "./src/testing/fake-openai.ts",
+      "types": "./dist/testing/fake-openai.d.ts",
+      "default": "./dist/testing/fake-openai.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc",
+    "prepack": "pnpm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript7": "npm:typescript@^7.0.2"
+  }
+}

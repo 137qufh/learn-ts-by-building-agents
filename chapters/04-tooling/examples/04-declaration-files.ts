@@ -14,7 +14,6 @@ const result: Stats | null = stats([3, 1, 4, 1, 5]);
 if (result !== null) {
   console.log(result.mean); // 2.8
 }
-// round("3.14"); // 取消注释试试：error TS2345，字符串不能传给 number 参数
 
 // ── 2. 模块扩充：往别人的接口里加东西 ────────────────────────────────────
 import { emit, on } from "./vendor/event-bus.ts";
@@ -30,8 +29,16 @@ on("tool:start", ({ tool, input }) => console.log(`开始 ${tool}(${input})`));
 on("tool:end", ({ tool, ms }) => console.log(`结束 ${tool}，用时 ${ms}ms`));
 emit("tool:start", { tool: "search", input: "TypeScript" }); // 开始 search(TypeScript)
 emit("tool:end", { tool: "search", ms: 12 }); // 结束 search，用时 12ms
-// emit("tool:end", { tool: "search" }); // 取消注释试试：缺少 ms
-// emit("tool:typo", {}); // 取消注释试试：没有这个事件
+
+// 下面这些写法都会报类型错误。放在一个从不调用的函数里：标了 @ts-expect-error 的代码运行时照样会执行
+function _typeErrors(): void {
+  // @ts-expect-error 字符串不能传给 number 参数：声明文件生效了
+  round("3.14");
+  // @ts-expect-error 缺少 ms
+  emit("tool:end", { tool: "search" });
+  // @ts-expect-error 没有这个事件
+  emit("tool:typo", {});
+}
 
 // ── 3. 全局声明：描述运行时环境里本来就有的全局变量 ──────────────────────
 declare global {

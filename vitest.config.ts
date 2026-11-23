@@ -17,9 +17,20 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: useSolutions ? [redirectExercisesToSolutions()] : [],
+    // 导入 @learn-ts/agent-kit 时直接使用源码，改了不用重新构建（4.9 节）。
+    // 测试运行在 Vite 的服务端环境里，所以是 ssr.resolve；写了 conditions 会替换掉默认值，
+    // 后面三项就是 Vite 的默认值，要一起写上
+    ssr: {
+      resolve: { conditions: ["@learn-ts/source", "module", "node", "development|production"] },
+    },
     test: {
       include: useSolutions
-        ? ["chapters/**/*.test.ts", "exercises/**/*.test.ts", "tests/**/*.test.ts"]
+        ? [
+            "chapters/**/*.test.ts",
+            "exercises/**/*.test.ts",
+            "packages/*/test/**/*.test.ts",
+            "tests/**/*.test.ts",
+          ]
         : ["exercises/**/*.test.ts"],
       // 少数测试需要知道自己在检查哪个目录（比如练习 4-5 要对练习文件本身运行 ESLint）
       env: { LEARN_TS_MODE: useSolutions ? "solutions" : "exercises" },
