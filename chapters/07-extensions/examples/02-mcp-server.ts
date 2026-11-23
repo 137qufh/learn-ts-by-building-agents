@@ -4,6 +4,8 @@
 // 预期输出：
 // invalid true 0
 // saved 已保存 牛奶
+// thrown true disk full
+// missing ProtocolError
 // about a notes server
 // prompt Summarize milk
 
@@ -21,6 +23,9 @@ server.registerTool(
     return { content: [{ type: "text" as const, text: `已保存 ${text}` }] };
   },
 );
+server.registerTool("boom", { description: "总是失败", inputSchema: z.object({}) }, async () => {
+  throw new Error("disk full");
+});
 server.registerResource(
   "about",
   "notes://about",
@@ -47,6 +52,19 @@ console.log("invalid", invalid.isError === true, saved);
 const ok = await client.callTool({ name: "add_note", arguments: { text: "牛奶" } });
 const okText = ok.content.find((block) => block.type === "text");
 console.log("saved", okText !== undefined && "text" in okText ? okText.text : "");
+const thrown = await client.callTool({ name: "boom", arguments: {} });
+const thrownText = thrown.content.find((block) => block.type === "text");
+console.log(
+  "thrown",
+  thrown.isError === true,
+  thrownText !== undefined && "text" in thrownText ? thrownText.text : "",
+);
+try {
+  await client.callTool({ name: "没有这个", arguments: {} });
+  console.log("missing", "no throw");
+} catch (error) {
+  console.log("missing", error instanceof Error ? error.name : "unknown");
+}
 const about = await client.readResource({ uri: "notes://about" });
 const aboutPart = about.contents[0];
 console.log("about", aboutPart !== undefined && "text" in aboutPart ? aboutPart.text : "");

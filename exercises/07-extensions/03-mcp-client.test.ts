@@ -131,6 +131,27 @@ describe("createMcpExecutor", () => {
     ).rejects.toThrow(/AbortError/);
   });
 
+  test("空前缀等于不加前缀，也不会把 timeout 传成 undefined", async () => {
+    let timeout: number | undefined = 123;
+    let sawTimeoutKey = false;
+    const executor = await createMcpExecutor(
+      {
+        listTools: () => Promise.resolve({ tools: [{ name: "search", description: "搜索" }] }),
+        callTool: (_params, options) => {
+          sawTimeoutKey = options !== undefined && "timeout" in options;
+          timeout = options?.timeout;
+          return Promise.resolve({ content: [{ type: "text", text: "" }] });
+        },
+      },
+      { prefix: "" },
+    );
+    expect(executor.schemas().map((schema) => schema.name)).toEqual(["search"]);
+    const result = await executor.dispatch({ id: "1", name: "search", arguments: "{}" });
+    expect(result).toEqual({ id: "1", ok: true, content: "（没有内容）" });
+    expect(sawTimeoutKey).toBe(false);
+    expect(timeout).toBeUndefined();
+  });
+
   test("前缀含 __ 或工具名重复时抛出", async () => {
     await expect(
       createMcpExecutor(

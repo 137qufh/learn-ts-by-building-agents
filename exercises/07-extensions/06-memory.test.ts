@@ -46,6 +46,24 @@ describe("compactMessages", () => {
       content: "以下是更早对话的摘要，不是新的问题：\n摘要",
     });
     expect(kept.messages.slice(2)).toEqual(messages.slice(2));
+
+    const twoTools: Message[] = [
+      { role: "user", content: "算两个" },
+      toolCall("c1", "add"),
+      toolResult("c1", "1"),
+      toolResult("c2", "2"),
+      { role: "assistant", content: "好" },
+    ];
+    // keep 2：末尾那条 assistant 只有 1 条，必须再留下前面整块（调用 + 两条结果）
+    const both = compactMessages(twoTools, { keep: 2, summarize: () => "旧的" });
+    expect(both.messages.map((message) => message.role)).toEqual([
+      "user",
+      "assistant",
+      "tool",
+      "tool",
+      "assistant",
+    ]);
+    expect(both.covered).toBe(1);
   });
 
   test("keep 为 0 时除了 system 都折叠；非法 keep 抛错", () => {
@@ -85,6 +103,10 @@ describe("createMemoryStore", () => {
     first.text = "改了";
     expect(store.list()[0]?.text).toBe("牛奶");
     expect(store.search("牛奶").map((item) => item.id)).toEqual(["m2", "m1"]);
+    const tied = createMemoryStore();
+    tied.add("牛奶", 5);
+    tied.add("牛奶", 5);
+    expect(tied.search("牛奶").map((item) => item.id)).toEqual(["m1", "m2"]);
     const listed = store.list();
     const item = listed[0];
     if (item === undefined) throw new Error("missing");

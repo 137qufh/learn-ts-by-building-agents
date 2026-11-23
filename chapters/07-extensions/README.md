@@ -38,6 +38,19 @@
 
 7.1 到 7.3 是一条线，按顺序读。7.4 和 7.5 是多 agent。7.6 和 7.7 是记忆。7.8 和 7.9 是评测。章末项目把 MCP、子 agent 和检索接到同一次运行里。
 
+四条线接在同一个 `ToolExecutor` 上，而不是四个框架：
+
+- MCP 适配器把别人的工具变成 `schemas` 和 `dispatch`。模型看见的名字可以带 `服务器__工具` 前缀，服务器上的名字不带
+- 子 agent 也是一次 `dispatch`：父模型调用 `summarize`，里面跑另一个 `createAgent`。它的 `history` 是空的
+- 记忆和检索还是一次 `dispatch`：`remember` 写入，`recall` 读出。折叠旧消息发生在发请求之前，和 6.4 节的预算是同一层
+- 评测不进循环。它消费一次运行的文本、工具名和记录。能写死的用 7.8，写不死的才解析裁判的 JSON，再和基线比下降了没有
+
+SDK 的常量名字会误导。`@modelcontextprotocol/client` 2.4.0 导出的 `LATEST_PROTOCOL_VERSION` 是 `2025-11-25`，`SUPPORTED_PROTOCOL_VERSIONS` 里没有 `2026-07-28`。那五个日期是旧时代的修订。进程内握手得到的就是 `2025-11-25` / `legacy`；stdio 上把协商设成 `auto`，同一份服务器可以得到 `2026-07-28` / `modern`。看 `getNegotiatedProtocolVersion()`，不要看常量叫什么。`@modelcontextprotocol/sdk` 是 v1 的包，这一章不从它的深层路径写起。
+
+## 和前几章怎么接
+
+第 5 章把不可信的输入挡在边界上。MCP 的工具参数、裁判返回的 JSON，都是这条边界的新实例：schema 或手写的解析在用之前跑，失败变成文字或 `{ ok: false }`，不变成一次没人接的异常。第 6 章的 `ToolExecutor`、`createAgent` 和 `isSecretKey` 是这一章的接口。新代码尽量不改主循环：适配器、子 agent、检索都坐在 `dispatch` 上，折叠坐在发请求之前，评测坐在运行结束之后。
+
 ## 关于这一章的练习
 
 - 每道练习都可以单独运行，例如 `pnpm ex 03-mcp-client`；`pnpm ex 07-extensions` 运行本章全部练习
@@ -53,7 +66,7 @@
 
 1. 工具、资源、提示，各给模型什么？为什么"把文件内容做成一个工具"往往是错的？
 2. 为什么 MCP 服务器不能 `console.log`？`StdioClientTransport` 的 stderr 默认是什么？
-3. `InMemoryTransport.createLinkedPair()` 协商到的协议版本，和 stdio 上 `versionNegotiation: { mode: "auto" }` 协商到的，我们量到的分别是什么？
+3. `LATEST_PROTOCOL_VERSION` 这个常量的值是什么？它和 `2026-07-28` 是什么关系？进程内握手，以及 stdio 上 `versionNegotiation: { mode: "auto" }`，`getNegotiatedProtocolVersion()` 各是什么？
 4. 参数校验失败时 `callTool` 会抛异常吗？工具名不存在呢？
 5. 取消客户端的 `signal` 之后，服务器里的处理函数会自动停下来吗？
 6. 为什么适配器不 import SDK，却仍然能传入官方的 `Client`？

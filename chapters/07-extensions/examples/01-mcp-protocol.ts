@@ -5,11 +5,18 @@
 // 预期输出：
 // request tools/list 1
 // notification notifications/initialized
+// latest constant 2025-11-25
+// supported has 2026-07-28? false
 // version 2025-11-25 legacy
 // tools add
 // 1+2=3
 
-import { Client, InMemoryTransport } from "@modelcontextprotocol/client";
+import {
+  Client,
+  InMemoryTransport,
+  LATEST_PROTOCOL_VERSION,
+  SUPPORTED_PROTOCOL_VERSIONS,
+} from "@modelcontextprotocol/client";
 import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 
@@ -38,6 +45,8 @@ await client.connect(clientTransport);
 const listed = await client.listTools();
 const sum = await client.callTool({ name: "add", arguments: { a: 1, b: 2 } });
 const text = sum.content.find((block) => block.type === "text");
+console.log("latest constant", LATEST_PROTOCOL_VERSION);
+console.log("supported has 2026-07-28?", SUPPORTED_PROTOCOL_VERSIONS.includes("2026-07-28"));
 console.log("version", client.getNegotiatedProtocolVersion(), client.getProtocolEra());
 console.log("tools", listed.tools.map((tool) => tool.name).join(","));
 console.log("1+2=" + (text !== undefined && "text" in text ? text.text : ""));

@@ -16,6 +16,12 @@ describe("mergeTools", () => {
     const unknown = await merged.dispatch({ id: "1", name: "b", arguments: "{}" });
     expect(unknown.ok).toBe(false);
     expect(unknown.content).toContain("a");
+    expect(() => mergeTools([])).toThrow(/至少/);
+    const schemas = merged.schemas();
+    const first = schemas[0];
+    if (first === undefined) throw new Error("missing schema");
+    first.description = "改了";
+    expect(merged.schemas()[0]?.description).toBe("a");
   });
 });
 

@@ -81,6 +81,24 @@ describe("orchestrate", () => {
     expect(calls).toBe(2);
   });
 
+  test("交给 route 的笔记是副本，改它影响不到结果", async () => {
+    const specialists: Specialist[] = [{ name: "搜索", run: () => Promise.resolve("找到了") }];
+    const seen: string[][] = [];
+    const result = await orchestrate({
+      specialists,
+      context: {},
+      route: ({ step, notes }) => {
+        seen.push(notes as string[]);
+        (notes as string[]).push("伪造");
+        if (step === 1) return { type: "delegate", specialist: "搜索", task: "a" };
+        return { type: "final", text: "好" };
+      },
+    });
+    expect(seen[0]).not.toBe(seen[1]);
+    expect(result.notes).toEqual(["搜索：找到了"]);
+    expect(result.text).toBe("好");
+  });
+
   test("步数用尽、未知专家、已经取消、maxSteps 不合法", async () => {
     const specialists: Specialist[] = [{ name: "搜索", run: () => Promise.resolve("x") }];
     const stopped = await orchestrate({

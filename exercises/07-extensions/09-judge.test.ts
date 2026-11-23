@@ -49,6 +49,15 @@ describe("parseJudge", () => {
         ["准确"],
       ),
     ).toEqual({ ok: false, error: '评分项 "准确" 重复了' });
+    expect(
+      parseJudge('{"scores":[{"criterion":"准确","score":3,"reason":"太高"}]}', ["准确"]),
+    ).toEqual({
+      ok: false,
+      error: '评分项 "准确" 的分数必须是 0、1 或 2',
+    });
+    expect(
+      parseJudge('{"scores":[{"criterion":"准确","score":1.5,"reason":"半"}]}', ["准确"]).ok,
+    ).toBe(false);
   });
 });
 
@@ -75,6 +84,15 @@ describe("compareBaseline", () => {
     });
     expect(compareBaseline([{ name: "总结", mean: 2 }], [{ name: "总结", mean: 2 }])).toEqual({
       ok: true,
+    });
+    // 下降刚好等于容忍度，不算回归；超过才算
+    expect(compareBaseline([{ name: "总结", mean: 1 }], [{ name: "总结", mean: 2 }], 1)).toEqual({
+      ok: true,
+    });
+    expect(compareBaseline([{ name: "总结", mean: 0 }], [{ name: "总结", mean: 2 }], 1)).toEqual({
+      ok: false,
+      regressions: [{ name: "总结", before: 2, after: 0, delta: -2 }],
+      missing: [],
     });
   });
 
