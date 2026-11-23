@@ -53,7 +53,7 @@ const result = await client.complete({ messages, tools: registry.schemas() });
 
 几个设计决定：
 
-- **只支持 OpenAI 兼容的 `/chat/completions` 接口。** 这是事实上的通用格式：OpenAI、DeepSeek、通义千问、Kimi、智谱、Ollama、vLLM、OpenRouter 都提供它，换一个 `baseUrl` 和 `model` 就能切换。各家的原生接口（比如 Anthropic 的 Messages API）功能更多，第 7 章再说
+- **只支持 OpenAI 兼容的 `/chat/completions` 接口。** 这是事实上的通用格式：OpenAI、DeepSeek、通义千问、Kimi、智谱、Ollama、vLLM、OpenRouter 都提供它，换一个 `baseUrl` 和 `model` 就能切换。各家的原生接口（比如 Anthropic 的 Messages API）这门课不逐家适配。[第 7 章](../07-extensions/README.md) 用 MCP 把外部工具接到同一个 harness 上，模型这一侧仍然走这个接口
 - **`stream` 返回 `AsyncGenerator<StreamEvent>`**，`StreamEvent` 是一个可辨识联合（1.6 节），调用方用 `switch` 处理每种事件
 - **工具的定义直接用第 2 章的 `ToolSchema`**，模型返回的工具调用就是第 2 章的 `RawToolCall`，可以直接交给 `registry.dispatch`；用量是第 1 章的 `Usage`。前面几章做的东西开始拼到一起了
 - **`fetch` 可以替换。** 默认用全局的 `fetch`；测试时换成一个假的。这是 3.7 节"把依赖作为参数传进来"的又一次应用，也是这个项目能在没有网络、没有 API key 的情况下被完整测试的原因

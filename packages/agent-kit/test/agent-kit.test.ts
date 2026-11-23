@@ -3,14 +3,23 @@
 
 import * as kit from "@learn-ts/agent-kit";
 import {
+  compareBaseline,
   createAgent,
   createClient,
+  createMcpExecutor,
   createRecordingTracer,
   createRegistry,
   defineTool,
+  delegate,
+  mergeTools,
+  parentSummary,
+  parseJudge,
   requireApproval,
+  runEval,
+  shareContext,
   type AgentEvent,
   type ChatResult,
+  type McpToolSource,
 } from "@learn-ts/agent-kit";
 import * as kitTesting from "@learn-ts/agent-kit/testing";
 import {
@@ -36,13 +45,21 @@ describe("公开接口", () => {
       "batch",
       "collect",
       "collectTurn",
+      "compactMessages",
+      "compareBaseline",
       "compose",
+      "cosine",
       "createAgent",
       "createChannel",
       "createClient",
+      "createLocalEmbedder",
+      "createMcpExecutor",
+      "createMemoryStore",
       "createRecordingTracer",
       "createRegistry",
+      "createRetriever",
       "defineTool",
+      "delegate",
       "dispatchEvent",
       "errorFromResponse",
       "estimateCost",
@@ -57,8 +74,12 @@ describe("公开接口", () => {
       "isSecretKey",
       "isTimeoutError",
       "mapAsync",
+      "mergeTools",
       "messageTokens",
       "noopTracer",
+      "orchestrate",
+      "parentSummary",
+      "parseJudge",
       "parseRetryAfter",
       "parseSse",
       "raceAbort",
@@ -67,7 +88,9 @@ describe("公开接口", () => {
       "repairHistory",
       "requireApproval",
       "retry",
+      "runEval",
       "runToolCalls",
+      "shareContext",
       "take",
       "toError",
       "toJsonLine",
@@ -110,7 +133,7 @@ describe("公开接口", () => {
     ]);
   });
 
-  test("主入口不依赖 zod：只用主入口的使用者不需要安装它", async () => {
+  test("主入口不依赖 zod，也不依赖 MCP SDK", async () => {
     const { globSync, readFileSync } = await import("node:fs");
     const { fileURLToPath } = await import("node:url");
     const src = fileURLToPath(new URL("../src/", import.meta.url));
@@ -118,7 +141,8 @@ describe("公开接口", () => {
     expect(files).toContain("agent/agent.ts");
     const sources = files.map((file) => readFileSync(`${src}/${file}`, "utf8"));
     for (const source of sources) {
-      expect(source).not.toMatch(/from "zod"/);
+      expect(source).not.toMatch(/from ["']zod["']/);
+      expect(source).not.toMatch(/from ["']@modelcontextprotocol\//);
     }
   });
 
@@ -322,5 +346,131 @@ describe("agent harness（0.3.0）", () => {
     expectTypeOf(createToolbox([weather])).toExtend<
       NonNullable<Parameters<typeof createAgent>[0]["tools"]>
     >();
+  });
+});
+
+describe("MCP、多 agent、记忆和评测（0.4.0）", () => {
+  test("官方 Client 能直接交给 createMcpExecutor，工具进入 harness", async () => {
+    const { Client, InMemoryTransport } = await import("@modelcontextprotocol/client");
+    const { McpServer } = await import("@modelcontextprotocol/server");
+    const { z: zod } = await import("zod");
+    const notes: string[] = [];
+    const server = new McpServer({ name: "notes", version: "1.0.0" });
+    server.registerTool(
+      "add_note",
+      {
+        description: "保存笔记",
+        inputSchema: zod.object({ text: zod.string().min(1) }),
+      },
+      async ({ text }) => {
+        notes.push(text);
+        return { content: [{ type: "text" as const, text: `已保存 ${notes.length}` }] };
+      },
+    );
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: "agent-kit", version: "0.4.0" });
+    await server.connect(serverTransport);
+    await client.connect(clientTransport);
+    expectTypeOf(client).toExtend<McpToolSource>();
+
+    try {
+      const mcp = await createMcpExecutor(client, { prefix: "notes" });
+      const remember = {
+        schemas: () => [
+          {
+            name: "remember",
+            description: "记住一条事实",
+            parameters: {
+              type: "object",
+              properties: { text: { type: "string" } },
+              required: ["text"],
+            },
+          },
+        ],
+        async dispatch(call: { id: string; name: string; arguments: string }) {
+          return { id: call.id, ok: true, content: `记住了 ${call.arguments}` };
+        },
+      };
+      const tools = mergeTools([mcp, remember]);
+      const model = createScriptedModel([
+        {
+          toolCalls: [
+            { name: "notes__add_note", arguments: { text: "买牛奶" } },
+            { name: "remember", arguments: { text: "用户要低脂" } },
+          ],
+        },
+        { text: "记好了" },
+      ]);
+      const result = await createAgent({ model, tools }).run("记下买牛奶").result;
+      expect(result.stopReason).toEqual({ type: "completed" });
+      expect(result.text).toBe("记好了");
+      expect(notes).toEqual(["买牛奶"]);
+      const toolMessages = result.messages.filter((message) => message.role === "tool");
+      expect(toolMessages.map((message) => message.content)).toEqual([
+        "已保存 1",
+        '记住了 {"text":"用户要低脂"}',
+      ]);
+      expect(client.getNegotiatedProtocolVersion()).toBe("2025-11-25");
+    } finally {
+      await client.close();
+      await server.close();
+    }
+  });
+
+  test("子 agent 看不到父对话；密钥进不了共享上下文", async () => {
+    const child = createScriptedModel([{ text: "两瓶低脂" }]);
+    const agent = createAgent({ model: child, system: "用一句话总结" });
+    const shared = shareContext(
+      { note: "买牛奶", apiKey: "sk-secret", inputTokens: "12", userId: "u1" },
+      { allow: ["note", "apiKey", "inputTokens", "userId"], deny: ["userId"] },
+    );
+    expect(shared).toEqual({ note: "买牛奶", inputTokens: "12" });
+    const note = shared["note"];
+    if (note === undefined) throw new Error("note 应该在共享上下文里");
+    const result = await delegate(agent, "总结购物", { context: note });
+    expect(parentSummary(result)).toBe("两瓶低脂");
+    expect(child.requests[0]?.messages.map((message) => message.role)).toEqual(["system", "user"]);
+    expect(JSON.stringify(child.requests[0]?.messages)).not.toContain("sk-secret");
+    expect(child.requests[0]?.messages[1]).toMatchObject({
+      role: "user",
+      content: "背景：\n买牛奶\n\n任务：\n总结购物",
+    });
+  });
+
+  test("评测失败会留下原因，分数下降会对照基线报回归", async () => {
+    const report = await runEval([
+      {
+        name: "通过",
+        expect: { textIncludes: ["牛奶"], tools: ["add"] },
+        run: () =>
+          Promise.resolve({
+            text: "买了牛奶",
+            tools: ["add"],
+            transcript: [{ role: "assistant", text: "买了牛奶", tools: [] }],
+          }),
+      },
+      {
+        name: "失败",
+        expect: { textEquals: "没有" },
+        run: () => Promise.reject(new Error("模型超时")),
+      },
+    ]);
+    expect(report.passed).toBe(1);
+    expect(report.failed).toEqual([{ name: "失败", reasons: ["运行抛出了错误：模型超时"] }]);
+
+    const judged = parseJudge(
+      '说明\n```json\n{"scores":[{"criterion":"准确","score":2,"reason":"对了"}]}\n```',
+      ["准确"],
+    );
+    expect(judged).toEqual({
+      ok: true,
+      scores: [{ criterion: "准确", score: 2, reason: "对了" }],
+      mean: 2,
+    });
+    expect(compareBaseline([{ name: "总结", mean: 1 }], [{ name: "总结", mean: 2 }], 0.5)).toEqual({
+      ok: false,
+      regressions: [{ name: "总结", before: 2, after: 1, delta: -1 }],
+      missing: [],
+    });
   });
 });

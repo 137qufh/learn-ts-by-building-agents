@@ -135,4 +135,54 @@ export {
   type Tracer,
 } from "./agent/tracing.ts";
 
+// ── 扩展：MCP 适配、多 agent、记忆、评测（第 7 章）────────────────
+// MCP 适配器不 import SDK，只要求 listTools / callTool。官方 Client 结构上符合。
+// 编排、摘要、检索、评测都是纯函数，离线就能测，所以放在主入口而不是新的子路径。
+export {
+  createMcpExecutor,
+  type McpContentBlock,
+  type McpExecutorOptions,
+  type McpListedTool,
+  type McpToolResult,
+  type McpToolSource,
+} from "./mcp-tools.ts";
+export { delegate, parentSummary, type DelegateOptions, type DelegateResult } from "./delegate.ts";
+export { shareContext, type SharePolicy } from "./share-context.ts";
+export {
+  orchestrate,
+  type OrchestrateOptions,
+  type OrchestrateResult,
+  type OrchestratorState,
+  type RouteDecision,
+  type Specialist,
+} from "./orchestrate.ts";
+export { compactMessages, type CompactResult } from "./compact.ts";
+export { createMemoryStore, type MemoryItem, type MemoryStore } from "./memory.ts";
+export {
+  cosine,
+  createLocalEmbedder,
+  createRetriever,
+  type Embedder,
+  type Retrieved,
+  type Retriever,
+  type RetrieverOptions,
+} from "./retrieve.ts";
+export { mergeTools } from "./merge-tools.ts";
+export {
+  compareBaseline,
+  parseJudge,
+  runEval,
+  type BaselineComparison,
+  type EvalCase,
+  type EvalExpect,
+  type EvalFailure,
+  type EvalOutcome,
+  type EvalReport,
+  type JudgeResult,
+  type Regression,
+  type RubricScore,
+  type ScorePoint,
+  type TranscriptTurn,
+} from "./eval.ts";
+
 // 用 Zod 定义工具（第 5 章）在单独的入口 @learn-ts/agent-kit/zod 里，见 ./zod/index.ts

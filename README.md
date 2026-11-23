@@ -1,5 +1,7 @@
 # Learn TypeScript by Building Agents
 
+[![CI](https://github.com/137qufh/learn-ts-by-building-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/137qufh/learn-ts-by-building-agents/actions/workflows/ci.yml)
+
 > 从零学 TypeScript，一路做到能自己写一个 Agent Harness。
 > Learn TypeScript from zero by building an AI agent harness, step by step.
 
@@ -41,7 +43,7 @@ pnpm ex 00-setup                                  # 开始做第 0 章的练习
 | 4   | [工程化](chapters/04-tooling/README.md)：模块、exports、构建与发布、声明文件、lint、测试、monorepo             | 工作区里的包 @learn-ts/agent-kit    | ✅ 已完成 |
 | 5   | [Schema 与校验](chapters/05-validation/README.md)：Zod、JSON Schema、运行时校验                                | 类型安全的工具（tool）定义          | ✅ 已完成 |
 | 6   | [Agent Harness](chapters/06-harness/README.md)：主循环、并行工具、上下文预算、停止与恢复、事件流、中间件、追踪 | 能用的 agent harness 与沙箱文件助手 | ✅ 已完成 |
-| 7   | 扩展：MCP、多 agent、记忆、评测                                                                                | 完整项目                            | 计划中    |
+| 7   | [扩展](chapters/07-extensions/README.md)：MCP、多 agent、记忆、评测                                            | 接到 agent-kit 0.4.0 的工作室       | ✅ 已完成 |
 
 ## 怎么学
 

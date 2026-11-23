@@ -73,7 +73,7 @@ emit("tool:end", { name: "search", duration: 120 });
 
 模板字面量类型可以出现在条件类型的 `extends` 里，配合 `infer` 从字符串中提取片段。
 
-很多 MCP 客户端（第 7 章）会把工具名写成 `服务器__工具` 的形式，避免不同服务器的同名工具冲突。用类型把它拆开：
+很多 MCP 客户端（[第 7 章](../07-extensions/01-mcp-protocol.md)）会把工具名写成 `服务器__工具` 的形式，避免不同服务器的同名工具冲突。用类型把它拆开：
 
 ```ts
 type SplitToolName<N extends string> = N extends `${infer Server}__${infer Tool}`

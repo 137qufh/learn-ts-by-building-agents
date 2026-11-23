@@ -1,8 +1,8 @@
 {
   "name": "@learn-ts/agent-kit",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
-  "description": "第 2、3、5、6 章的工具注册表、流式模型客户端、基于 Zod 的工具定义和 agent harness，打包成一个可以复用的包。",
+  "description": "第 2、3、5、6、7 章的工具注册表、流式模型客户端、基于 Zod 的工具定义、agent harness，以及 MCP 适配、多 agent、记忆和评测。",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -45,6 +45,8 @@
     }
   },
   "devDependencies": {
+    "@modelcontextprotocol/client": "2.4.0",
+    "@modelcontextprotocol/server": "2.4.0",
     "@types/node": "^24.19.2",
     "typescript7": "npm:typescript@^7.0.2",
     "zod": "^4.6.7"
